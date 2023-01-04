@@ -45,6 +45,15 @@ public class Regler {
         return false;
     }
 
+    /**
+     * Den tjekker om der er og hvilke legalmoves der så er med
+     * Hvis HashMap er Null, så er der ingen legalmoves
+     * 
+     * @param farve Det er vis tur det er
+     * @return Et HashMap startende med en integer bestående af koordinator fx.
+     *         (3,4) = 34, efterfølgende af en Integer List, som består af lignende
+     *         koordinator, som repræsentere alle brikker der skal vendes
+     */
     public Map<Integer, List<Integer>> legalmove(int farve) {
         this.legalMap = new HashMap<>();
         int mod;
@@ -54,25 +63,41 @@ public class Regler {
             mod = 1;
         }
 
+        // Gennemgår hele brættet
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
+                // Finder alle spillerens brikker
                 if (braet[i][j] == farve) {
-                    for (int i2 = i - 1; i2 < i + 1; i2++) {
-                        for (int j2 = j - 1; j2 < j + 1; j2++) {
+                    // Kigger i en 3*3 rundt om spilleren brik
+                    for (int i2 = i - 1; i2 <= i + 1; i2++) {
+                        for (int j2 = j - 1; j2 <= j + 1; j2++) {
+                            // Finder modstanderbrikkerne omkring spillerens brik
                             if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == mod) {
+                                List<Integer> muligvej = new ArrayList<Integer>();
+                                int placeholder = i2 * 10 + j2;
+                                muligvej.add(placeholder);
                                 int relx = i2 - i;
                                 int rely = j2 - j;
-                                List<Integer> muligvej = new ArrayList<Integer>();
-                                while (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size
+
+                                // Følger vejen af brikker der skal vendes, uden nødvendigvis at have en tom
+                                // brik for enden
+                                while ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
+                                        && (j2 + rely) <= size
                                         && braet[i2 + relx][j2 + rely] == mod) {
-                                    int placeholder = i2 * 10 + j2;
+
+                                    placeholder = (i2 + relx) * 10 + j2 + rely;
                                     muligvej.add(placeholder);
                                     i2 += relx;
                                     j2 += rely;
                                 }
-                                if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == 0) {
-                                    int placeholder = i2 * 10 + j2;
+
+                                // Finder om der er en tom brik for enden af vejen og tilføjer hvis der er
+                                if ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
+                                        && (j2 + rely) <= size && braet[i2 + relx][j2 + rely] == 0) {
+
+                                    placeholder = (i2 + relx) * 10 + j2 + rely;
                                     legalMap.put(placeholder, muligvej);
+
                                 }
                             }
                         }
