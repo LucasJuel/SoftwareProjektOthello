@@ -6,6 +6,7 @@ public class Regler {
     private int[][] braet;
     private int size; // 8*8 size=7
     private int startplacements = 0;
+    private Map<Integer, List<Integer>> legalMap = new HashMap<>();
 
     /**
      * Intiation of Regler 
@@ -41,9 +42,45 @@ public class Regler {
         return false;
     }
 
-    public Map<Integer, List<Integer>> Legalmove() {
-        Map<Integer, List<Integer>> legalMap = new HashMap<>();
+    public Map<Integer, List<Integer>> Legalmove(int farve) {
+        this.legalMap = new HashMap<>();
+        int mod;
+        if(farve == 1){
+            mod = 2;
+        } else {
+            mod = 1;
+        }
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(braet[i][j] == mod){
+                    for (int i2 = i-1; i2 < i+1; i2++) {
+                        for (int j2 = j-1; j2 < j+1; j2++) {
+                            if(braet[i2][j2] == 0){
+                                if(i2 == -1 && j2 == -1){
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                    // if(i == 0 && j == 0){
+
+                    // }
+                    // if(i == 0 && j > 0 && j < size){
+
+                    // }
+                    // if(i == size && j == 0){
+
+                    // }
+
+                }
+            }
+        }
+
+
         
+
 
         return legalMap;
     }
