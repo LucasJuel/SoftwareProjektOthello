@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,8 @@ public class Regler {
     private Map<Integer, List<Integer>> legalMap = new HashMap<>();
 
     /**
-     * Intiation of Regler 
+     * Intiation of Regler
+     * 
      * @param size hvis 8*8 size = 7
      */
     public Regler(int size) {
@@ -25,7 +27,8 @@ public class Regler {
     // gøres 4 gange for at lave de første brikker
     /**
      * Vi starte øverst i venstre hjørne, som i 4 kvadrant
-     * @param farve 1 for hvid og 2 for sort
+     * 
+     * @param farve      1 for hvid og 2 for sort
      * @param placementx fra 0 til 7 hvis size = 7
      * @param placementy fra 0 til 7 hvis size = 7
      * @return Hvis det kan lade sig gøre så er den true
@@ -42,10 +45,10 @@ public class Regler {
         return false;
     }
 
-    public Map<Integer, List<Integer>> Legalmove(int farve) {
+    public Map<Integer, List<Integer>> legalmove(int farve) {
         this.legalMap = new HashMap<>();
         int mod;
-        if(farve == 1){
+        if (farve == 1) {
             mod = 2;
         } else {
             mod = 1;
@@ -53,41 +56,35 @@ public class Regler {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if(braet[i][j] == mod){
-                    for (int i2 = i-1; i2 < i+1; i2++) {
-                        for (int j2 = j-1; j2 < j+1; j2++) {
-                            if(braet[i2][j2] == 0){
-                                if(i2 == -1 && j2 == -1){
-                                    
+                if (braet[i][j] == farve) {
+                    for (int i2 = i - 1; i2 < i + 1; i2++) {
+                        for (int j2 = j - 1; j2 < j + 1; j2++) {
+                            if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == mod) {
+                                int relx = i2 - i;
+                                int rely = j2 - j;
+                                List<Integer> muligvej = new ArrayList<Integer>();
+                                while (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size
+                                        && braet[i2 + relx][j2 + rely] == mod) {
+                                    int placeholder = i2 * 10 + j2;
+                                    muligvej.add(placeholder);
+                                    i2 += relx;
+                                    j2 += rely;
+                                }
+                                if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == 0) {
+                                    int placeholder = i2 * 10 + j2;
+                                    legalMap.put(placeholder, muligvej);
                                 }
                             }
                         }
                     }
-
-                    // if(i == 0 && j == 0){
-
-                    // }
-                    // if(i == 0 && j > 0 && j < size){
-
-                    // }
-                    // if(i == size && j == 0){
-
-                    // }
-
                 }
             }
         }
 
-
-        
-
-
         return legalMap;
     }
 
-
-
-    public int[][] gameboard () {
+    public int[][] gameboard() {
         return braet;
     }
 
