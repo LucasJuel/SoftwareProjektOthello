@@ -1,1 +1,3 @@
-asasdasd
+public class dinfar{
+    
+}
