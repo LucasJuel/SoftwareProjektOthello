@@ -85,12 +85,19 @@ public class Regler {
                                 while ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
                                         && (j2 + rely) <= size
                                         && braet[i2 + relx][j2 + rely] == mod) {
-
+                                            System.out.println("j2 1 = " + j2);
                                     placeholder = (i2 + relx) * 10 + j2 + rely;
                                     muligvej.add(placeholder);
-
+                                    System.out.println("hej");
+                                    System.out.println("x = " + relx);
+                                    System.out.println("y = " + rely);
+                                    System.out.println("j2 = " + j2);
+                                    
                                     i2 += relx;
                                     j2 += rely;
+                                    System.out.println("j2 2 = " + j2);
+                                    
+
                                 }
 
                                 // Finder om der er en tom brik for enden af vejen og tilføjer hvis der er
@@ -129,7 +136,7 @@ public class Regler {
      * @param placementy fra 0 til 7 hvis size = 7
      */
     public void standardmove (int farve, int placementx, int placementy){
-        braet[placementx][placementy] = farve;
+        this.braet[placementx][placementy] = farve;
     }
 
 }
