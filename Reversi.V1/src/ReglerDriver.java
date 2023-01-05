@@ -13,6 +13,7 @@ public class ReglerDriver {
 
        
 
+        
         // System.out.println(hej.startmoves(1, 4, 3)+ " = false");
         // System.out.println(hej.startmoves(1, 3, 3)+ " = false");
 

@@ -26,6 +26,7 @@ public class Regler {
 
     // gøres 4 gange for at lave de første brikker
     /**
+     * Må kun køres de første 4 gange
      * Vi starte øverst i venstre hjørne, som i 4 kvadrant
      * 
      * @param farve      1 for hvid og 2 for sort
@@ -46,10 +47,10 @@ public class Regler {
     }
 
     /**
-     * Den tjekker om der er og hvilke legalmoves der så er med
+     * Den tjekker om der er og hvilke legalmoves der så er med. 
      * Hvis HashMap er Null, så er der ingen legalmoves
      * 
-     * @param farve Det er vis tur det er
+     * @param farve Det er hvis tur det er, 1 for hvid og 2 for sort
      * @return Et HashMap startende med en integer bestående af koordinator fx.
      *         (3,4) = 34, efterfølgende af en Integer List, som består af lignende
      *         koordinator, som repræsentere alle brikker der skal vendes
