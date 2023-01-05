@@ -14,10 +14,19 @@ public class ReglerDriver {
         hej.standardmove(1, 3, 2);
         hej.standardmove(2, 2, 4);
         hej.standardmove(1, 2, 3);
+        hej.standardmove(1, 5, 4);
+        hej.standardmove(1, 6, 4);
         // System.out.println(hej.startmoves(1, 4, 3)+ " = false");
         // System.out.println(hej.startmoves(1, 3, 3)+ " = false");
+        int[][] brat = hej.gameboard();
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
 
-        System.out.println(hej.legalmove(2));
+                System.out.print(brat[j][i] + " ");
+            }
+            System.out.println();
+        }
+       System.out.println(hej.legalmove(2));
 
         int f = 3;
         int g = -1;
