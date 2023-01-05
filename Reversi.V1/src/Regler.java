@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import java.awt.Point;
 
 public class Regler {
     private int[][] braet;
@@ -135,6 +136,9 @@ public class Regler {
             this.braet[flip.get(i)][flip.get(i)] = farve;
         }
     }
+
+
+
 
     public int winner (){
         int hvid = 0;

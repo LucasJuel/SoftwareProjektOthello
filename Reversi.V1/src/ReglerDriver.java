@@ -26,12 +26,14 @@ public class ReglerDriver {
             }
             System.out.println();
         }
-       System.out.println(hej.legalmove(2));
+        System.out.println(hej.legalmove(2));
 
         int f = 3;
         int g = -1;
         f += g;
         System.out.println(f);
+
+
     
 
         
