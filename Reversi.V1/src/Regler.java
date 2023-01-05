@@ -87,6 +87,7 @@ public class Regler {
 
                                     placeholder = (i2 + relx) * 10 + j2 + rely;
                                     muligvej.add(placeholder);
+
                                     i2 += relx;
                                     j2 += rely;
                                 }
@@ -96,7 +97,12 @@ public class Regler {
                                         && (j2 + rely) <= size && braet[i2 + relx][j2 + rely] == 0) {
 
                                     placeholder = (i2 + relx) * 10 + j2 + rely;
-                                    legalMap.put(placeholder, muligvej);
+                                    if (legalMap.containsKey(placeholder)) {
+                                        List<Integer> oldway = legalMap.get(placeholder);
+                                        oldway.addAll(muligvej);
+                                    } else {
+                                        legalMap.put(placeholder, muligvej);
+                                    }
 
                                 }
                             }
@@ -111,6 +117,18 @@ public class Regler {
 
     public int[][] gameboard() {
         return braet;
+    }
+
+    /**
+     * Skal kun modtage lovlige træk.
+     * Vi starte øverst i venstre hjørne, som i 4 kvadrant
+     * 
+     * @param farve      1 for hvid og 2 for sort
+     * @param placementx fra 0 til 7 hvis size = 7
+     * @param placementy fra 0 til 7 hvis size = 7
+     */
+    public void standardmove (int farve, int placementx, int placementy){
+        braet[placementx][placementy] = farve;
     }
 
 }
