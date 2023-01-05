@@ -16,7 +16,7 @@ public class Regler {
      */
     public Regler(int size) {
         this.size = size;
-        this.braet = new int[size][size];
+        this.braet = new int[size + 1][size + 1];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 braet[i][j] = 0;
@@ -79,25 +79,25 @@ public class Regler {
                                 muligvej.add(placeholder);
                                 int relx = i2 - i;
                                 int rely = j2 - j;
-
+                                int j3 = j2;
+                                int i3 = i2;
                                 // Følger vejen af brikker der skal vendes, uden nødvendigvis at have en tom
                                 // brik for enden
-                                while ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
-                                        && (j2 + rely) <= size
-                                        && braet[i2 + relx][j2 + rely] == mod) {
-
-                                    placeholder = (i2 + relx) * 10 + j2 + rely;
+                                while ((i3 + relx) >= 0 && (i3 + relx) <= size && (j3 + rely) >= 0
+                                        && (j3 + rely) <= size
+                                        && braet[i3 + relx][j3 + rely] == mod) {
+                                            
+                                    placeholder = (i3 + relx) * 10 + j3 + rely;
                                     muligvej.add(placeholder);
 
-                                    i2 += relx;
-                                    j2 += rely;
+                                    i3 += relx;
+                                    j3 += rely;
+
                                 }
-
                                 // Finder om der er en tom brik for enden af vejen og tilføjer hvis der er
-                                if ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
-                                        && (j2 + rely) <= size && braet[i2 + relx][j2 + rely] == 0) {
-
-                                    placeholder = (i2 + relx) * 10 + j2 + rely;
+                                if ((i3 + relx) >= 0 && (i3 + relx) <= size && (j3 + rely) >= 0
+                                && (j3 + rely) <= size && braet[i3 + relx][j3 + rely] == 0) {
+                                    placeholder = (i3 + relx) * 10 + j3 + rely;
                                     if (legalMap.containsKey(placeholder)) {
                                         List<Integer> oldway = legalMap.get(placeholder);
                                         oldway.addAll(muligvej);
@@ -122,14 +122,35 @@ public class Regler {
 
     /**
      * Skal kun modtage lovlige træk.
-     * Vi starte øverst i venstre hjørne, som i 4 kvadrant
+     * Vi starte øverst i venstre hjørne, som i 4 kvadrant.
      * 
      * @param farve      1 for hvid og 2 for sort
      * @param placementx fra 0 til 7 hvis size = 7
      * @param placementy fra 0 til 7 hvis size = 7
      */
     public void standardmove (int farve, int placementx, int placementy){
-        braet[placementx][placementy] = farve;
+        this.braet[placementx][placementy] = farve;
+        List<Integer> flip = legalMap.get(placementx);
+        for (int i = 0; i < flip.size(); i++) {
+            this.braet[flip.get(i)][flip.get(i)] = farve;
+        }
     }
 
+    public int winner (){
+        int hvid = 0;
+        int sort = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(braet[i][j] == 1){
+                    hvid++;
+                } else if(braet[i][j] == 2){
+                    sort++;
+                }
+            }
+        }
+        if(hvid>sort){
+            return 1;
+        }
+        return 2;
+    }
 }
