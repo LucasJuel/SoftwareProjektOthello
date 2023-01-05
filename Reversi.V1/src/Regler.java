@@ -9,6 +9,7 @@ public class Regler {
     private int size; // 8*8 size=7
     private int startplacements = 0;
     private Map<Point, List<Point>> legalMap = new HashMap<>();
+    private int color;
 
     /**
      * Intiation of Regler
@@ -16,6 +17,7 @@ public class Regler {
      * @param size hvis 8*8 size = 7
      */
     public Regler(int size) {
+        color = 1;
         this.size = size;
         this.braet = new int[size + 1][size + 1];
         for (int i = 0; i < size; i++) {
@@ -35,13 +37,19 @@ public class Regler {
      * @param placementy fra 0 til 7 hvis size = 7
      * @return Hvis det kan lade sig gøre så er den true
      */
-    public boolean startmoves(int farve, int placementx, int placementy) {
+    public boolean startmoves(int placementx, int placementy) {
         if ((placementx == size / 2 || placementx == (size / 2 + 1))
                 && (placementy == size / 2 || placementy == (size / 2 + 1))
                 && braet[placementx][placementy] == 0
                 && startplacements < 4) {
 
-            braet[placementx][placementy] = farve;
+            braet[placementx][placementy] = color;
+            if(startplacements < 2){
+                color = 1;
+            } else if(startplacements >= 2){
+                color = 2;
+            }
+            startplacements++;
             return true;
         }
         return false;
@@ -157,5 +165,19 @@ public class Regler {
             return 1;
         }
         return 2;
+    }
+
+    public boolean start(){
+        if(startplacements < 4){
+            System.out.println(startplacements);
+            return true;
+        } else {
+            System.out.println(startplacements);
+            return false;
+        }
+    }
+
+    public int getStartPlacement(){
+        return startplacements;
     }
 }

@@ -9,9 +9,13 @@ public class Brik{
     static int color = 1;
     ArrayList<Circle> circles = new ArrayList<Circle>();
     Circle circle;
+    Regler r;
+    boolean checkStart;
 
-    public Brik(){
 
+    public Brik(Regler r){
+        this.r = r;
+        checkStart = r.start();
     }
 
     public Circle setBrik(Point p){
@@ -19,17 +23,18 @@ public class Brik{
         circle.setCenterX(p.x * 100 + 50);
         circle.setCenterY(p.y * 100 + 50);
         circle.setRadius(40);
-        setColor();
         circles.add(circle);
 
+        if(r.getStartPlacement() < 4) {
+            if(r.getStartPlacement() > 2){
+                circle.setFill(Paint.valueOf("white"));
+            } else{
+                circle.setFill(Paint.valueOf("black"));
+            }
+        } else {
+            setColor();
+        }
         return circle;
-        // if(circle.getCenterX() <= 800){
-        //     System.out.println(color + ", " + p.x + ", " + p.y);
-        //     circles.add(circle);
-        //     root.getChildren().add(circle);
-        // }
-
-        
     }
 
     public int getColorRep(){
