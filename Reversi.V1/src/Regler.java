@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
 public class Regler {
     private int[][] braet;
     private int size; // 8*8 size=7
