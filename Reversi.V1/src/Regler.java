@@ -141,9 +141,7 @@ public class Regler {
         this.braet[placementx][placementy] = farve;
     }
 
-
-
-
+    
     public int winner (){
         int hvid = 0;
         int sort = 0;
@@ -158,7 +156,9 @@ public class Regler {
         }
         if(hvid>sort){
             return 1;
-        }
-        return 2;
+        } else if (sort> hvid) {
+            return 2;
+        } 
+        return 0;
     }
 }
