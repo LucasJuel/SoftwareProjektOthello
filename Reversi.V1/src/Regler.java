@@ -44,9 +44,9 @@ public class Regler {
                 && startplacements < 4) {
 
             braet[placementx][placementy] = color;
-            if(startplacements < 2){
+            if (startplacements < 2) {
                 color = 1;
-            } else if(startplacements >= 2){
+            } else if (startplacements >= 2) {
                 color = 2;
             }
             startplacements++;
@@ -81,40 +81,7 @@ public class Regler {
                     // Kigger i en 3*3 rundt om spilleren brik
                     for (int i2 = i - 1; i2 <= i + 1; i2++) {
                         for (int j2 = j - 1; j2 <= j + 1; j2++) {
-                            // Finder modstanderbrikkerne omkring spillerens brik
-                            if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == mod) {
-                                List<Point> muligvej = new ArrayList<Point>();
-                                Point placeholder = new Point(i2, j2);
-                                muligvej.add(placeholder);
-                                int relx = i2 - i;
-                                int rely = j2 - j;
-                                int j3 = j2;
-                                int i3 = i2;
-                                // Følger vejen af brikker der skal vendes, uden nødvendigvis at have en tom
-                                // brik for enden
-                                while ((i3 + relx) >= 0 && (i3 + relx) <= size && (j3 + rely) >= 0
-                                        && (j3 + rely) <= size
-                                        && braet[i3 + relx][j3 + rely] == mod) {
-
-                                    placeholder = new Point((i3 + relx), (j3 + rely));
-                                    muligvej.add(placeholder);
-
-                                    i3 += relx;
-                                    j3 += rely;
-
-                                }
-                                // Finder om der er en tom brik for enden af vejen og tilføjer hvis der er
-                                if ((i3 + relx) >= 0 && (i3 + relx) <= size && (j3 + rely) >= 0
-                                        && (j3 + rely) <= size && braet[i3 + relx][j3 + rely] == 0) {
-                                    placeholder = new Point((i3 + relx), (j3 + rely));
-                                    if (legalMap.containsKey(placeholder)) {
-                                        List<Point> oldway = legalMap.get(placeholder);
-                                        oldway.addAll(muligvej);
-                                    } else {
-                                        legalMap.put(placeholder, muligvej);
-                                    }
-                                }
-                            }
+                            indsaetMuligvej(i2, j2, mod, i, j);
                         }
                     }
                 }
@@ -122,6 +89,41 @@ public class Regler {
         }
 
         return legalMap;
+    }
+
+    private void indsaetMuligvej(int i2, int j2, int mod, int i, int j) {
+        // Finder modstanderbrikkerne omkring spillerens brik
+        if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == mod) {
+            List<Point> muligvej = new ArrayList<Point>();
+            Point placeholder = new Point(i2, j2);
+            muligvej.add(placeholder);
+            int relx = i2 - i;
+            int rely = j2 - j;
+            // Følger vejen af brikker der skal vendes, uden nødvendigvis at have en tom
+            // brik for enden
+            while ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
+                    && (j2 + rely) <= size
+                    && braet[i2 + relx][j2 + rely] == mod) {
+
+                placeholder = new Point((i2 + relx), (j2 + rely));
+                muligvej.add(placeholder);
+
+                i2 += relx;
+                j2 += rely;
+
+            }
+            // Finder om der er en tom brik for enden af vejen og tilføjer hvis der er
+            if ((i2 + relx) >= 0 && (i2 + relx) <= size && (j2 + rely) >= 0
+                    && (j2 + rely) <= size && braet[i2 + relx][j2 + rely] == 0) {
+                placeholder = new Point((i2 + relx), (j2 + rely));
+                if (legalMap.containsKey(placeholder)) {
+                    List<Point> oldway = legalMap.get(placeholder);
+                    oldway.addAll(muligvej);
+                } else {
+                    legalMap.put(placeholder, muligvej);
+                }
+            }
+        }
     }
 
     public int[][] gameboard() {
@@ -163,12 +165,15 @@ public class Regler {
         }
         if (hvid > sort) {
             return 1;
+        } else if (sort > hvid) {
+            return 2;
+        } else {
+            return 0;
         }
-        return 2;
     }
 
-    public boolean start(){
-        if(startplacements < 4){
+    public boolean start() {
+        if (startplacements < 4) {
             System.out.println(startplacements);
             return true;
         } else {
@@ -177,7 +182,7 @@ public class Regler {
         }
     }
 
-    public int getStartPlacement(){
+    public int getStartPlacement() {
         return startplacements;
     }
 }

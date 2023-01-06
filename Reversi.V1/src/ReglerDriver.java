@@ -31,11 +31,11 @@ public class ReglerDriver {
         hej.standardmove(2, 7, 4);
 
         printgame(hej);
-
+        System.out.println("hej");
         printMap(hej.legalmove(1));
 
         hej.standardmove(1, 4, 5);
-        printgame(hej);
+        //printgame(hej);
     }
 
     public static void printgame(Regler hej) {
