@@ -37,7 +37,7 @@ public class Regler {
      * @param placementy fra 0 til 7 hvis size = 7
      * @return Hvis det kan lade sig gøre så er den true
      */
-    public boolean startmoves(int placementx, int placementy) {
+    public boolean startMoves(int placementx, int placementy) {
         if ((placementx == size / 2 || placementx == (size / 2 + 1))
                 && (placementy == size / 2 || placementy == (size / 2 + 1))
                 && braet[placementx][placementy] == 0
@@ -64,7 +64,7 @@ public class Regler {
      *         (3,4) = 34, efterfølgende af en Integer List, som består af lignende
      *         koordinator, som repræsentere alle brikker der skal vendes
      */
-    public Map<Point, List<Point>> legalmove(int farve) {
+    public Map<Point, List<Point>> legalMove(int farve) {
         this.legalMap = new HashMap<>();
         int mod;
         if (farve == 1) {
@@ -91,6 +91,17 @@ public class Regler {
         return legalMap;
     }
 
+    /**
+     * Tjekker om det er mugligt for den modstander der er blevet fundet om der er
+     * flere og om der er en tom plads så det bliver en mulig position, og bliver
+     * tilføjet til hashmappet
+     * 
+     * @param i2  x koordinatet til modstanderen
+     * @param j2  y koordinatet til modstanderen
+     * @param mod farve af modstander
+     * @param i   x koordinatet til spillerens brik
+     * @param j   y koordinatet til spillerens brik
+     */
     private void indsaetMuligvej(int i2, int j2, int mod, int i, int j) {
         // Finder modstanderbrikkerne omkring spillerens brik
         if (i2 >= 0 && i2 <= size && j2 >= 0 && j2 <= size && braet[i2][j2] == mod) {
@@ -126,7 +137,12 @@ public class Regler {
         }
     }
 
-    public int[][] gameboard() {
+    /**
+     * For at få gameboard
+     * 
+     * @return retunere spillebrættet som int[][], hvor 1 er hvid og 2 er sort
+     */
+    public int[][] getGameboard() {
         return braet;
     }
 
@@ -138,7 +154,7 @@ public class Regler {
      * @param placementx fra 0 til 7 hvis size = 7
      * @param placementy fra 0 til 7 hvis size = 7
      */
-    public void standardmove(int farve, int placementx, int placementy) {
+    public void standardMove(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
         Point move = new Point(placementx, placementy);
         List<Point> flip = legalMap.get(move);
@@ -147,10 +163,16 @@ public class Regler {
         }
     }
 
-    public void standardmovead(int farve, int placementx, int placementy) {
+    public void standardMoveDev(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
     }
 
+    /**
+     * Finder ud af hvem der er vinder,
+     * tjekker ikke om der burde være en vinder
+     * 
+     * @return tal, 0 = uafgjort, 1 hvid vinder og 2 sort vinder
+     */
     public int winner() {
         int hvid = 0;
         int sort = 0;
@@ -172,6 +194,12 @@ public class Regler {
         }
     }
 
+    /**
+     * Tjekker om det stadig er en del af de 4 første moves
+     * hvor der skal først ligges 2 af en farve og 2 af den anden
+     * 
+     * @return om det er en af de første 4 træk : boolean
+     */
     public boolean start() {
         if (startplacements < 4) {
             System.out.println(startplacements);
@@ -182,6 +210,11 @@ public class Regler {
         }
     }
 
+    /**
+     * Hvilken tur er vi på
+     * 
+     * @return et tal fra 0 til 4, hvis 4 så er det ikke længere de første 4 moves
+     */
     public int getStartPlacement() {
         return startplacements;
     }
