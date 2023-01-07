@@ -21,7 +21,7 @@ public class GameDriver extends Application {
     private void handleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
-            if (gm.isOK(p)) {
+            if (gm.isOk(p)) {
                 if(ruleBoard.startMoves(p.x, p.y)){
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
