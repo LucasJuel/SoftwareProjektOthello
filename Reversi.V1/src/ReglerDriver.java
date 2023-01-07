@@ -35,7 +35,22 @@ public class ReglerDriver {
         printMap(hej.legalMove(1));
 
         hej.standardMove(1, 4, 5);
-        //printgame(hej);
+        move(hej, 2, 0,2);
+        move(hej, 1, 0,4);
+        move(hej, 2, 0,6);
+        System.out.println(hej.winner());
+        
+
+        // System.out.println(hej.legalmove(2));
+
+        //
+
+        // printgame(hej);
+
+        // printMap(hej.legalmove(1));
+
+        // hej.standardmove(1, 4, 5);
+        // printgame(hej);
     }
 
     public static void printgame(Regler hej) {
@@ -60,5 +75,21 @@ public class ReglerDriver {
             System.out.println();
         }
     }
+
+    public static void move(Regler hej, int f, int x, int y) {
+
+        printMap(hej.legalMove(f));
+        hej.standardMove(f, x, y);
+        if (f == 1) {
+            f = 2;
+        } else {
+            f = 1;
+        }
+
+        System.out.println("ny");
+        printMap(hej.legalMove(f));
+        printgame(hej);
+    }
+
 
 }

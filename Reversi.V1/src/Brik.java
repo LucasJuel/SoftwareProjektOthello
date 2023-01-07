@@ -12,7 +12,6 @@ public class Brik{
     Regler r;
     boolean checkStart;
 
-    
     public Brik(Regler r){
         this.r = r;
         checkStart = r.start();
