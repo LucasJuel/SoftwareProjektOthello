@@ -18,11 +18,15 @@ public class GameDriver extends Application {
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
+    /**
+     * Når der bliver trykket med hånden så bliver denne metode kaldt
+     * @param event
+     */
     private void handleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
             if (gm.isOK(p)) {
-                if(ruleBoard.startmoves(p.x, p.y)){
+                if(ruleBoard.startMoves(p.x, p.y)){
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                 } else if(ruleBoard.start() == false) {
