@@ -163,6 +163,14 @@ public class Regler {
         }
     }
 
+    /**
+     * Det behøver ikke at være et lovligt træk for at ændre farven
+     * Vi starte øverst i venstre hjørne, som i 4 kvadrant.
+     * 
+     * @param farve      1 for hvid og 2 for sort
+     * @param placementx fra 0 til 7 hvis size = 7
+     * @param placementy fra 0 til 7 hvis size = 7
+     */
     public void standardMoveDev(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
     }
