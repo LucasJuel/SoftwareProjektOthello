@@ -1,13 +1,16 @@
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.awt.Point;
 
 public class Brik {
 
     static int color = 1;
     ArrayList<Circle> circles = new ArrayList<Circle>();
-    ArrayList<Circle> possiblePosCircle = new ArrayList<Circle>();
+    static ArrayList<Circle> delPossiblePosCircle;
     Circle circle;
     Regler r;
     boolean checkStart;
@@ -35,6 +38,7 @@ public class Brik {
         circle.setCenterY(p.y * 100 + 50);
         circle.setRadius(40);
         circles.add(circle);
+
 
         if (r.getStartPlacement() < 4) {
             if (r.getStartPlacement() > 2) {
@@ -71,22 +75,34 @@ public class Brik {
      *          størrelsen er 8
      * @return retunere et Circle objekt
      */
-    public Circle possibleCircle(Point p) {
+    public void possibleCircle(Map<Point, List<Point>> legalMovesMap, GameBoard gm) {
         // ArrayList<Point> list = new ArrayList<Point>();
-        // for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
         // list.add(entry.getKey());
         // // Do things with the list
         // }
-        // possiblePosCircle = new ArrayList<Circle>();
+        delPossiblePosCircle = new ArrayList<Circle>();
 
-        circle = new Circle();
-        circle.setFill(Paint.valueOf("blue"));
-        circle.setStroke(Paint.valueOf("blue"));
-        circle.setStrokeWidth(2);
-        circle.setCenterX(p.x * 100 + 50);
-        circle.setCenterY(p.y * 100 + 50);
-        circle.setRadius(40);
-        return circle;
+        for(Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
+            Circle circle = new Circle();
+            circle.setFill(null);
+            circle.setStroke(Paint.valueOf("blue"));
+            circle.setStrokeWidth(2);
+            circle.setCenterX(entry.getKey().x * 100 + 50);
+            circle.setCenterY(entry.getKey().y * 100 + 50);
+            circle.setRadius(40);
+            gm.getRoot().getChildren().add(circle);
+            delPossiblePosCircle.add(circle);
+        }
+
+    }
+
+    public void deletePossibleCircle(Map<Point, List<Point>> legalMovesMap, GameBoard gm){
+        if(delPossiblePosCircle != null){
+            for(int i = 0; i < delPossiblePosCircle.size(); i++ ) {
+                gm.getRoot().getChildren().remove(delPossiblePosCircle.get(i));
+            }
+        }
+
     }
 
     /**
