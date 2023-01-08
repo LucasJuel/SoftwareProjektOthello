@@ -17,7 +17,7 @@ public class Regler {
      * @param size hvis 8*8 size = 7
      */
     public Regler(int size) {
-        color = 1;
+        color = 2;
         this.size = size;
         this.braet = new int[size + 1][size + 1];
         for (int i = 0; i < size; i++) {
@@ -43,12 +43,12 @@ public class Regler {
                 && braet[placementx][placementy] == 0
                 && startplacements < 4) {
 
-            braet[placementx][placementy] = color;
             if (startplacements < 2) {
-                color = 1;
-            } else if (startplacements >= 2) {
                 color = 2;
+            } else if (startplacements >= 2) {
+                color = 1;
             }
+            braet[placementx][placementy] = color;
             startplacements++;
             return true;
         }
@@ -74,8 +74,8 @@ public class Regler {
         }
 
         // Gennemgår hele brættet
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < size+1; i++) {
+            for (int j = 0; j < size+1; j++) {
                 // Finder alle spillerens brikker
                 if (braet[i][j] == farve) {
                     // Kigger i en 3*3 rundt om spilleren brik
@@ -163,6 +163,14 @@ public class Regler {
         }
     }
 
+    /**
+     * Det behøver ikke at være et lovligt træk for at ændre farven
+     * Vi starte øverst i venstre hjørne, som i 4 kvadrant.
+     * 
+     * @param farve      1 for hvid og 2 for sort
+     * @param placementx fra 0 til 7 hvis size = 7
+     * @param placementy fra 0 til 7 hvis size = 7
+     */
     public void standardMoveDev(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
     }
@@ -202,10 +210,10 @@ public class Regler {
      */
     public boolean start() {
         if (startplacements < 4) {
-            System.out.println(startplacements);
+            // System.out.println(startplacements);
             return true;
         } else {
-            System.out.println(startplacements);
+            // System.out.println(startplacements);
             return false;
         }
     }
@@ -218,4 +226,16 @@ public class Regler {
     public int getStartPlacement() {
         return startplacements;
     }
+
+    // public boolean checkForLegalMove(Point p) {
+    // for (Map.Entry<Point, List<Point>> entry : legalMap.entrySet()) {
+    // Point key = entry.getKey();
+    // if (legalMap) {
+    // return true;
+    // } else {
+    // return false;
+    // }
+    // }
+    // }
+
 }
