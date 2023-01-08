@@ -17,6 +17,7 @@ public class GameDriver extends Application {
     private Map<Point, List<Point>> legalMovesMap = new HashMap<>();
     private int pass = 0;
     private int winner = 0;
+    private int color = 2;
 
     @Override
     public void start(Stage primStage) throws Exception {
@@ -32,16 +33,23 @@ public class GameDriver extends Application {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
             if (gm.isOk(p)) {
+
                 if(ruleBoard.startMoves(p.x, p.y)){
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
 
                     //Da den allerede har ændret farve til den næste brik.
-                    legalMovesMap = ruleBoard.legalMove(brik.getColorRep());
+                    changeColor();
+                    //System.out.println("farven er " + color);
+                    legalMovesMap = ruleBoard.legalMove(color);
+                    // System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
+                    printgame(ruleBoard);
                 } else if(ruleBoard.start() == false && legalMovesMap == null){
                     //Betyder at der skal meldes pas
+                    System.out.println("hej");
                     pass++;
                 } else if(ruleBoard.start() == false && legalMovesMap.containsKey(p)) {
+                    System.out.println(legalMovesMap);
                     //En almindelig tur i spillet
                     List<Point> brikVendes = legalMovesMap.get(p);
                     Brik brik = new Brik(ruleBoard);
@@ -52,7 +60,11 @@ public class GameDriver extends Application {
                     }
                     pass = 0;
                     //Da den allerede har ændret farve til den næste brik.
-                    legalMovesMap = ruleBoard.legalMove(brik.getColorRep());
+                    changeColor();
+                    System.out.println("farven er " + color);
+                    legalMovesMap = ruleBoard.legalMove(color);
+                    System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
+                    printgame(ruleBoard);
                 } else if (ruleBoard.start() == false && legalMovesMap == null && pass == 2) {
                     //Spillet er færdig
                     winner = ruleBoard.winner();
@@ -61,6 +73,25 @@ public class GameDriver extends Application {
         } else {
             System.out.println(event.getTarget());
             gm.getRoot().getChildren().remove(event.getTarget());
+        }
+    }
+
+    private void changeColor () {
+        if (color == 1) {
+            color = 2;
+        } else {
+            color = 1;
+        }
+    }
+
+    public static void printgame(Regler hej) {
+        int[][] brat = hej.getGameboard();
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+
+                System.out.print(brat[j][i] + " ");
+            }
+            System.out.println();
         }
     }
 

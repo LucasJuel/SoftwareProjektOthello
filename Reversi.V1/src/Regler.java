@@ -17,7 +17,7 @@ public class Regler {
      * @param size hvis 8*8 size = 7
      */
     public Regler(int size) {
-        color = 1;
+        color = 2;
         this.size = size;
         this.braet = new int[size + 1][size + 1];
         for (int i = 0; i < size; i++) {
@@ -43,12 +43,12 @@ public class Regler {
                 && braet[placementx][placementy] == 0
                 && startplacements < 4) {
 
-            braet[placementx][placementy] = color;
             if (startplacements < 2) {
-                color = 1;
-            } else if (startplacements >= 2) {
                 color = 2;
+            } else if (startplacements >= 2) {
+                color = 1;
             }
+            braet[placementx][placementy] = color;
             startplacements++;
             return true;
         }
@@ -202,10 +202,10 @@ public class Regler {
      */
     public boolean start() {
         if (startplacements < 4) {
-            System.out.println(startplacements);
+            // System.out.println(startplacements);
             return true;
         } else {
-            System.out.println(startplacements);
+            // System.out.println(startplacements);
             return false;
         }
     }
@@ -220,14 +220,14 @@ public class Regler {
     }
 
     // public boolean checkForLegalMove(Point p) {
-    //     for (Map.Entry<Point, List<Point>> entry : legalMap.entrySet()) {
-    //         Point key = entry.getKey();
-    //         if (legalMap) {
-    //             return true;
-    //         } else {
-    //             return false;
-    //         }
-    //     }
+    // for (Map.Entry<Point, List<Point>> entry : legalMap.entrySet()) {
+    // Point key = entry.getKey();
+    // if (legalMap) {
+    // return true;
+    // } else {
+    // return false;
+    // }
+    // }
     // }
 
 }
