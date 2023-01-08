@@ -13,23 +13,29 @@ public class GameBoard {
     public Scene scene = new Scene(root);
     int height;
 
-    public GameBoard(int size){
+    public GameBoard(int size) {
         this.size = size;
     }
 
-    public Stage draw(Stage primStage){
+    /**
+     * Laver et spillebræt som er grønt med alle firkanter
+     * 
+     * @param primStage Stage der bliver brugt
+     * @return Stagen der er i gang med at blive brugt
+     */
+    public Stage draw(Stage primStage) {
         height = size * 100;
         primStage.setTitle("Den bedste Reversi");
 
-        primStage.setHeight(height+40);
-        primStage.setWidth(height+17+200);
+        primStage.setHeight(height + 40);
+        primStage.setWidth(height + 17 + 200);
 
         primStage.setScene(scene);
         primStage.setResizable(false);
         scene.setFill(Paint.valueOf("Green"));
         primStage.getIcons().add(new Image("file:./img/IconReversi.png"));
 
-        for(int i = 0; i < height+100; i+=100){
+        for (int i = 0; i < height + 100; i += 100) {
             System.out.println(i);
             Line Xgridline = new Line(i, 0, i, height);
             Xgridline.setFill(Paint.valueOf("black"));
@@ -42,22 +48,22 @@ public class GameBoard {
         return primStage;
     }
 
-    public void /* regler */ restart(){
+    public void /* regler */ restart() {
 
     }
 
-    public Scene getGMScene(){
+    public Scene getGMScene() {
         return this.scene;
     }
 
-    public Group getRoot(){
+    public Group getRoot() {
         return this.root;
     }
 
-    public boolean isOK(Point p){
-        if(p.x * 100 < height){
+    public boolean isOk(Point p) {
+        if (p.x * 100 < height) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
