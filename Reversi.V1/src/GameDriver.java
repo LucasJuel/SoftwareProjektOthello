@@ -84,8 +84,8 @@ public class GameDriver extends Application {
         }
     }
 
-    public static void printgame(Regler hej) {
-        int[][] brat = hej.getGameboard();
+    public static void printgame(Regler rule) {
+        int[][] brat = rule.getGameboard();
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
 
