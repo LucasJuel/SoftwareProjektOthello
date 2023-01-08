@@ -48,6 +48,22 @@ public class Brik {
     }
 
     /**
+     * Flipper en brik på spille brættet
+     * 
+     * @param p et Point objekt med positionen på brættet, fra 0 til 7 hvis
+     *          størrelsen er 8
+     * @return retunere et Circle objekt
+     */
+    public Circle flipBrik(Point p) {
+        circle = new Circle();
+        circle.setCenterX(p.x * 100 + 50);
+        circle.setCenterY(p.y * 100 + 50);
+        circle.setRadius(40);
+        circles.add(circle);
+        return circle;
+    }
+
+    /**
      * Retunere farven af brikken der bliver brugt
      * @return 1 for hvid og 2 for sort
      */

@@ -218,4 +218,16 @@ public class Regler {
     public int getStartPlacement() {
         return startplacements;
     }
+
+    // public boolean checkForLegalMove(Point p) {
+    //     for (Map.Entry<Point, List<Point>> entry : legalMap.entrySet()) {
+    //         Point key = entry.getKey();
+    //         if (legalMap) {
+    //             return true;
+    //         } else {
+    //             return false;
+    //         }
+    //     }
+    // }
+
 }
