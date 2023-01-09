@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
@@ -14,8 +15,11 @@ public class GameDriver extends Application {
         launch(args);
     }
 
-    GameBoard gm = new GameBoard(8);
-    Regler ruleBoard = new Regler(8 - 1);
+    private int size = 8;
+    GameBoard gm = new GameBoard(size);
+    Regler ruleBoard = new Regler(size - 1);
+    Button genstartSpilKnap;
+    Stage primStage;
 
     private Map<Point, List<Point>> legalMovesMap = new HashMap<>();
     ArrayList<Circle> posCircles = new ArrayList<Circle>();
@@ -25,7 +29,9 @@ public class GameDriver extends Application {
 
     @Override
     public void start(Stage primStage) throws Exception {
+        this.primStage = primStage;
         gm.draw(primStage).show();
+        gm.setTurText(2);
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
@@ -37,67 +43,70 @@ public class GameDriver extends Application {
     private void handleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
+            Point q = new Point((int) event.getX(), (int) event.getY());
             if (gm.isOk(p)) {
 
+                // De første 4 moves
                 if (ruleBoard.startMoves(p.x, p.y)) {
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     changeColor();
-                    // System.out.println("farven er " + color);
+                    if(ruleBoard.getStartPlacement() < 2) {
+                        gm.setTurText(2);
+                    } else {
+                        gm.setTurText(1);
+                    }
                     legalMovesMap = ruleBoard.legalMove(color);
                     if (ruleBoard.getStartPlacement() == 4) {
                         // Da den allerede har ændret farve til den næste brik.
-
+                        brik.setColorRes();
+                        Brik brikPos2 = new Brik(ruleBoard);
+                        brikPos2.possibleCircle(legalMovesMap, gm);
+                        gm.setTurText(color);
                     }
-                    // System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
-                    // printgame(ruleBoard);
-                } else if (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
-                    // Betyder at der skal meldes pas
-                    System.out.println("hej");
-                    pass++;
-                    changeColor();
-                    // System.out.println("farven er " + color);
-                    legalMovesMap = ruleBoard.legalMove(color);
                 } else if (ruleBoard.start() == false && legalMovesMap.containsKey(p)) {
-                    // System.out.println(legalMovesMap);
                     // En almindelig tur i spillet
+                    pass = 0;
                     Brik brikPos = new Brik(ruleBoard);
-                    brikPos.deletePossibleCircle(legalMovesMap, gm);
+                    brikPos.deletePossibleCircle(gm);
+
                     ruleBoard.standardMove(color, p.x, p.y);
                     List<Point> brikVendes = legalMovesMap.get(p);
-
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     for (int i = 0; i < brikVendes.size(); i++) {
-                        // Man kunne tilføje noget her til at fjerne en cirkel der er under så der ikke
-                        // bliver vist rigtig mange cirkler over hinanden.
-                        // System.out.println(event.getTarget());
-                        // gm.getRoot().getChildren().remove();
                         Brik brikFlip = new Brik(ruleBoard);
                         gm.getRoot().getChildren().add(brikFlip.flipBrik(brikVendes.get(i)));
-                        ruleBoard.standardMoveDev(color, brikVendes.get(i).x, brikVendes.get(i).y);
                     }
-                    
 
                     // Da den allerede har ændret farve til den næste brik.
-                    changeColor();
-                    // System.out.println("farven er " + color);
-                    legalMovesMap = ruleBoard.legalMove(color);
-                    //System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
-                    //printgame(ruleBoard);
-                    Brik brikPos2 = new Brik(ruleBoard);
-                    brikPos2.possibleCircle(legalMovesMap, gm);
-                } else if (ruleBoard.start() == false && (legalMovesMap.isEmpty() || pass == 2)) {
-                    // Spillet er færdig
-                    winner = ruleBoard.winner();
+                    addPosCir();
                 }
+
+                while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
+                    if (ruleBoard.start() == false && (pass == 2)) {
+                        // Spillet er færdig
+                        winner = ruleBoard.winner();
+                        System.out.println("winner er " + winner);
+                        gm.setVinderText(winner);
+                        break;
+                    }
+                    // Betyder at der skal meldes pas
+                    System.out.println("pass");
+                    pass++;
+                    addPosCir();
+                    Brik brik = new Brik(ruleBoard);
+                    brik.setColorInt();
+                }
+            } else if (gm.knapIsPressed(q)) {
+                restartGame();
             }
-        } else {
-            System.out.println(event.getTarget());
-            gm.getRoot().getChildren().remove(event.getTarget());
         }
     }
 
+    /**
+     * Ændre hvilken farve tur det er
+     */
     private void changeColor() {
         if (color == 1) {
             color = 2;
@@ -106,15 +115,26 @@ public class GameDriver extends Application {
         }
     }
 
-    public static void printgame(Regler rule) {
-        int[][] brat = rule.getGameboard();
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 7; j++) {
-
-                System.out.print(brat[j][i] + " ");
-            }
-            System.out.println();
-        }
+    /**
+     * Den genstarter brættet og sætter et nyt spillebræt op
+     */
+    private void restartGame() {
+        gm = new GameBoard(size);
+        ruleBoard = new Regler(size - 1);
+        gm.draw(primStage).show();
+        gm.setTurText(2);
+        color = 2;
+        gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
+    /**
+     * Tilføjer cirkler hvor der er mulighed for at ligge en cirkel
+     */
+    private void addPosCir() {
+        changeColor();
+        legalMovesMap = ruleBoard.legalMove(color);
+        Brik brikPos = new Brik(ruleBoard);
+        brikPos.possibleCircle(legalMovesMap, gm);
+        gm.setTurText(color);
+    }
 }
