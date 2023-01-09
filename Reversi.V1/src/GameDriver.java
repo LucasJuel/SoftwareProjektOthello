@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
@@ -14,8 +15,11 @@ public class GameDriver extends Application {
         launch(args);
     }
 
-    GameBoard gm = new GameBoard(8);
-    Regler ruleBoard = new Regler(8 - 1);
+    private int size = 8;
+    GameBoard gm = new GameBoard(size);
+    Regler ruleBoard = new Regler(size - 1);
+    Button genstartSpilKnap;
+    Stage primStage;
 
     private Map<Point, List<Point>> legalMovesMap = new HashMap<>();
     ArrayList<Circle> posCircles = new ArrayList<Circle>();
@@ -23,9 +27,13 @@ public class GameDriver extends Application {
     private int winner = 0;
     private int color = 2;
 
+    
+
     @Override
     public void start(Stage primStage) throws Exception {
+        this.primStage = primStage;
         gm.draw(primStage).show();
+        // genstartSpilKnap =gm.getKnap();
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
@@ -37,6 +45,7 @@ public class GameDriver extends Application {
     private void handleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
+            Point q = new Point((int)event.getX(),(int) event.getY());
             if (gm.isOk(p)) {
 
                 // De første 4 moves
@@ -44,12 +53,14 @@ public class GameDriver extends Application {
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     changeColor();
+                    
                     // System.out.println("farven er " + color);
                     legalMovesMap = ruleBoard.legalMove(color);
                     if (ruleBoard.getStartPlacement() == 4) {
                         // Da den allerede har ændret farve til den næste brik.
                         Brik brikPos2 = new Brik(ruleBoard);
                         brikPos2.possibleCircle(legalMovesMap, gm);
+                        gm.setTurText(color);
                     }
                     // System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
                     // printgame(ruleBoard);
@@ -73,6 +84,7 @@ public class GameDriver extends Application {
                     legalMovesMap = ruleBoard.legalMove(color);
                     Brik brikPos2 = new Brik(ruleBoard);
                     brikPos2.possibleCircle(legalMovesMap, gm);
+                    gm.setTurText(color);
                 }
 
                 while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
@@ -80,6 +92,7 @@ public class GameDriver extends Application {
                         // Spillet er færdig
                         winner = ruleBoard.winner();
                         System.out.println("winner er " + winner);
+                        gm.setVinderText(winner);
                         break;
                     }
                     // Betyder at der skal meldes pas
@@ -87,13 +100,20 @@ public class GameDriver extends Application {
                     pass++;
                     changeColor();
                     legalMovesMap = ruleBoard.legalMove(color);
+                    Brik brikPos2 = new Brik(ruleBoard);
+                    brikPos2.possibleCircle(legalMovesMap, gm);
+                    gm.setTurText(color);
 
                 }
+            } else if (gm.knapIsPressed(q)) {
+                restartGame();
             }
-        } else {
-            System.out.println(event.getTarget());
-            gm.getRoot().getChildren().remove(event.getTarget());
-        }
+        } /*
+           * else {
+           * System.out.println(event.getTarget());
+           * gm.getRoot().getChildren().remove(event.getTarget());
+           * }
+           */
     }
 
     private void changeColor() {
@@ -113,6 +133,13 @@ public class GameDriver extends Application {
             }
             System.out.println();
         }
+    }
+
+    public void restartGame() {
+        gm = new GameBoard(size);
+        ruleBoard = new Regler(size - 1);
+        gm.draw(primStage).show();
+        gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
 }
