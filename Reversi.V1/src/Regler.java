@@ -149,7 +149,7 @@ public class Regler {
     }
 
     /**
-     * Skal kun modtage lovlige træk.
+     * Skal kun modtage lovlige træk. Den vender og ligger også en brik
      * Vi starte øverst i venstre hjørne, som i 4 kvadrant.
      * 
      * @param farve      1 for hvid og 2 for sort
@@ -229,16 +229,4 @@ public class Regler {
     public int getStartPlacement() {
         return startplacements;
     }
-
-    // public boolean checkForLegalMove(Point p) {
-    // for (Map.Entry<Point, List<Point>> entry : legalMap.entrySet()) {
-    // Point key = entry.getKey();
-    // if (legalMap) {
-    // return true;
-    // } else {
-    // return false;
-    // }
-    // }
-    // }
-
 }
