@@ -140,4 +140,12 @@ public class Brik {
             circle.setFill(Paint.valueOf("white"));
         }
     }
+    public void setColorInt() {
+        if (color == 1) {
+            color = 2;
+        } else if (color == 2) {
+            color = 1;
+        }
+    }
+
 }

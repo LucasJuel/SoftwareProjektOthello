@@ -95,6 +95,8 @@ public class GameDriver extends Application {
                     System.out.println("pass");
                     pass++;
                     addPosCir();
+                    Brik brik = new Brik(ruleBoard);
+                    brik.setColorInt();
                 }
             } else if (gm.knapIsPressed(q)) {
                 restartGame();
