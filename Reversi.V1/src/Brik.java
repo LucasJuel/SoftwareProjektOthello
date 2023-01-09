@@ -11,7 +11,7 @@ public class Brik {
     ArrayList<Circle> circles = new ArrayList<Circle>();
     static ArrayList<Circle> delPossiblePosCircle;
     Circle circle;
-    Regler r;
+    Regler regler;
     boolean checkStart;
 
     /**
@@ -19,9 +19,9 @@ public class Brik {
      * 
      * @param r Objektet Regler
      */
-    public Brik(Regler r) {
-        this.r = r;
-        checkStart = r.start();
+    public Brik(Regler regler) {
+        this.regler = regler;
+        checkStart = regler.start();
     }
 
     /**
@@ -40,8 +40,8 @@ public class Brik {
         circles.add(circle);
 
         // Ændre farven fra starten så der er to af hver efter hinanden
-        if (r.getStartPlacement() <= 4) {
-            if (r.getStartPlacement() > 2) {
+        if (regler.getStartPlacement() <= 4) {
+            if (regler.getStartPlacement() > 2) {
                 circle.setFill(Paint.valueOf("white"));
             } else {
                 circle.setFill(Paint.valueOf("black"));
