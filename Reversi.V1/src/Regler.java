@@ -74,8 +74,8 @@ public class Regler {
         }
 
         // Gennemgår hele brættet
-        for (int i = 0; i < size+1; i++) {
-            for (int j = 0; j < size+1; j++) {
+        for (int i = 0; i < size + 1; i++) {
+            for (int j = 0; j < size + 1; j++) {
                 // Finder alle spillerens brikker
                 if (braet[i][j] == farve) {
                     // Kigger i en 3*3 rundt om spilleren brik

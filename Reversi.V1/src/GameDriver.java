@@ -39,6 +39,7 @@ public class GameDriver extends Application {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
             if (gm.isOk(p)) {
 
+                // De første 4 moves
                 if (ruleBoard.startMoves(p.x, p.y)) {
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
@@ -47,20 +48,14 @@ public class GameDriver extends Application {
                     legalMovesMap = ruleBoard.legalMove(color);
                     if (ruleBoard.getStartPlacement() == 4) {
                         // Da den allerede har ændret farve til den næste brik.
-
+                        Brik brikPos2 = new Brik(ruleBoard);
+                        brikPos2.possibleCircle(legalMovesMap, gm);
                     }
                     // System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
                     // printgame(ruleBoard);
-                } else if (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
-                    // Betyder at der skal meldes pas
-                    System.out.println("hej");
-                    pass++;
-                    changeColor();
-                    // System.out.println("farven er " + color);
-                    legalMovesMap = ruleBoard.legalMove(color);
                 } else if (ruleBoard.start() == false && legalMovesMap.containsKey(p)) {
-                    // System.out.println(legalMovesMap);
                     // En almindelig tur i spillet
+                    pass = 0;
                     Brik brikPos = new Brik(ruleBoard);
                     brikPos.deletePossibleCircle(legalMovesMap, gm);
                     ruleBoard.standardMove(color, p.x, p.y);
@@ -69,27 +64,30 @@ public class GameDriver extends Application {
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     for (int i = 0; i < brikVendes.size(); i++) {
-                        // Man kunne tilføje noget her til at fjerne en cirkel der er under så der ikke
-                        // bliver vist rigtig mange cirkler over hinanden.
-                        // System.out.println(event.getTarget());
-                        // gm.getRoot().getChildren().remove();
                         Brik brikFlip = new Brik(ruleBoard);
                         gm.getRoot().getChildren().add(brikFlip.flipBrik(brikVendes.get(i)));
-                        ruleBoard.standardMoveDev(color, brikVendes.get(i).x, brikVendes.get(i).y);
                     }
-                    
 
                     // Da den allerede har ændret farve til den næste brik.
                     changeColor();
-                    // System.out.println("farven er " + color);
                     legalMovesMap = ruleBoard.legalMove(color);
-                    //System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
-                    //printgame(ruleBoard);
                     Brik brikPos2 = new Brik(ruleBoard);
                     brikPos2.possibleCircle(legalMovesMap, gm);
-                } else if (ruleBoard.start() == false && (legalMovesMap.isEmpty() || pass == 2)) {
-                    // Spillet er færdig
-                    winner = ruleBoard.winner();
+                }
+
+                while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
+                    if (ruleBoard.start() == false && (pass == 2)) {
+                        // Spillet er færdig
+                        winner = ruleBoard.winner();
+                        System.out.println("winner er " + winner);
+                        break;
+                    }
+                    // Betyder at der skal meldes pas
+                    System.out.println("pass");
+                    pass++;
+                    changeColor();
+                    legalMovesMap = ruleBoard.legalMove(color);
+
                 }
             }
         } else {
