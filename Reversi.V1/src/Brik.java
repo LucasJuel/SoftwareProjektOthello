@@ -32,24 +32,25 @@ public class Brik {
      * @return retunere et Circle objekt
      */
     public Circle setBrik(Point p) {
+        // Laver en ny cirkel
         circle = new Circle();
         circle.setCenterX(p.x * 100 + 50);
         circle.setCenterY(p.y * 100 + 50);
         circle.setRadius(40);
         circles.add(circle);
-        
 
+        // Ændre farven fra starten så der er to af hver efter hinanden
         if (r.getStartPlacement() <= 4) {
             if (r.getStartPlacement() > 2) {
                 circle.setFill(Paint.valueOf("white"));
             } else {
                 circle.setFill(Paint.valueOf("black"));
             }
-            
-            
+
         } else {
             setColor();
         }
+        // retunere Circle objektet
         return circle;
     }
 
@@ -61,6 +62,8 @@ public class Brik {
      * @return retunere et Circle objekt
      */
     public Circle flipBrik(Point p) {
+        // Laver en ny Circle og flipper farven til den rigtige, indsætter cirklen i
+        // midten af dens firkant
         circle = new Circle();
         setColorFlip();
         circle.setCenterX(p.x * 100 + 50);
@@ -77,17 +80,19 @@ public class Brik {
      * @return retunere et Circle objekt
      */
     public void possibleCircle(Map<Point, List<Point>> legalMovesMap, GameBoard gm) {
-        // ArrayList<Point> list = new ArrayList<Point>();
-        // list.add(entry.getKey());
-        // // Do things with the list
-        // }
+
         delPossiblePosCircle = new ArrayList<Circle>();
 
-        for(Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
+        // Den tager hele legalMovesmap og går i gennem alle keys og viser derved alle
+        // de mulige stedder at sætte en brik, hvorefter den tilføjer det til
+        // delPossiblePosCircle som indeholder alle cirkler som skal slettes
+        for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
             Circle circle = new Circle();
             circle.setFill(null);
             circle.setStroke(Paint.valueOf("blue"));
             circle.setStrokeWidth(2);
+
+            // Sætter den i midten af en firkant
             circle.setCenterX(entry.getKey().x * 100 + 50);
             circle.setCenterY(entry.getKey().y * 100 + 50);
             circle.setRadius(40);
@@ -99,11 +104,13 @@ public class Brik {
 
     /**
      * Den fjerner de cirkler der er for at vise hvor man kan sætte en brik
+     * 
      * @param gm GameBoard objekt
      */
-    public void deletePossibleCircle(GameBoard gm){
-        if(delPossiblePosCircle != null){
-            for(int i = 0; i < delPossiblePosCircle.size(); i++ ) {
+    public void deletePossibleCircle(GameBoard gm) {
+        // Går igennem delPossiblePosCircle, og sletter alle Circle objekter i den.
+        if (delPossiblePosCircle != null) {
+            for (int i = 0; i < delPossiblePosCircle.size(); i++) {
                 gm.getRoot().getChildren().remove(delPossiblePosCircle.get(i));
             }
         }
@@ -131,7 +138,7 @@ public class Brik {
     }
 
     /**
-     * Ændre farven af Cirklen til den modsatte af hvad den er
+     * Ændre farven af Cirklen til flip farve,
      */
     public void setColorFlip() {
         if (color == 1) {
@@ -140,6 +147,10 @@ public class Brik {
             circle.setFill(Paint.valueOf("white"));
         }
     }
+
+    /**
+     * Ændre farven af Cirklen uden at have lavet et cirkel objekt i forvejen
+     */
     public void setColorInt() {
         if (color == 1) {
             color = 2;
