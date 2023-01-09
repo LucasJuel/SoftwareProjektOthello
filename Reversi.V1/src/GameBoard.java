@@ -27,8 +27,6 @@ public class GameBoard {
         this.genstart= new Button();
         root = new Group();
         scene = new Scene(root);
-
-
     }
 
     /**
@@ -131,6 +129,4 @@ public class GameBoard {
             return false;
         }
     }
-
-    
 }

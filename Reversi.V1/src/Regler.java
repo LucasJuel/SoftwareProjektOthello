@@ -7,17 +7,18 @@ import java.awt.Point;
 public class Regler {
     private int[][] braet;
     private int size; // 8*8 size=7
-    private int startplacements = 0;
+    private int startplacements;
     private Map<Point, List<Point>> legalMap = new HashMap<>();
     private int color;
 
     /**
-     * Intiation of Regler
+     * Intiation of Regler, sætter bræt til 0
      * 
      * @param size hvis 8*8 size = 7
      */
     public Regler(int size) {
         color = 2;
+        startplacements = 0;
         this.size = size;
         this.braet = new int[size + 1][size + 1];
         for (int i = 0; i < size; i++) {
@@ -27,9 +28,8 @@ public class Regler {
         }
     }
 
-    // gøres 4 gange for at lave de første brikker
     /**
-     * Må kun køres de første 4 gange
+     * Kan kun køres de første 4 gange
      * Vi starte øverst i venstre hjørne, som i 4 kvadrant
      * 
      * @param farve      1 for hvid og 2 for sort
@@ -38,6 +38,8 @@ public class Regler {
      * @return Hvis det kan lade sig gøre så er den true
      */
     public boolean startMoves(int placementx, int placementy) {
+        // Den skal være placeret i de 4 midderste brikker, der må ikke allerede være en
+        // brik og det skal være et af de 4 første ryk
         if ((placementx == size / 2 || placementx == (size / 2 + 1))
                 && (placementy == size / 2 || placementy == (size / 2 + 1))
                 && braet[placementx][placementy] == 0
@@ -155,6 +157,7 @@ public class Regler {
      * @param placementy fra 0 til 7 hvis size = 7
      */
     public void standardMove(int farve, int placementx, int placementy) {
+        startplacements++;
         this.braet[placementx][placementy] = farve;
         Point move = new Point(placementx, placementy);
         List<Point> flip = legalMap.get(move);

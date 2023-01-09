@@ -37,13 +37,16 @@ public class Brik {
         circle.setCenterY(p.y * 100 + 50);
         circle.setRadius(40);
         circles.add(circle);
+        
 
-        if (r.getStartPlacement() < 4) {
+        if (r.getStartPlacement() <= 4) {
             if (r.getStartPlacement() > 2) {
                 circle.setFill(Paint.valueOf("white"));
             } else {
                 circle.setFill(Paint.valueOf("black"));
             }
+            
+            
         } else {
             setColor();
         }
@@ -94,7 +97,11 @@ public class Brik {
 
     }
 
-    public void deletePossibleCircle(Map<Point, List<Point>> legalMovesMap, GameBoard gm){
+    /**
+     * Den fjerner de cirkler der er for at vise hvor man kan sætte en brik
+     * @param gm GameBoard objekt
+     */
+    public void deletePossibleCircle(GameBoard gm){
         if(delPossiblePosCircle != null){
             for(int i = 0; i < delPossiblePosCircle.size(); i++ ) {
                 gm.getRoot().getChildren().remove(delPossiblePosCircle.get(i));
@@ -104,12 +111,10 @@ public class Brik {
     }
 
     /**
-     * Retunere farven af brikken der bliver brugt
-     * 
-     * @return 1 for hvid og 2 for sort
+     * Reseter farven til sort
      */
-    public int getColorRep() {
-        return color;
+    public void setColorRes() {
+        color = 2;
     }
 
     /**

@@ -27,13 +27,11 @@ public class GameDriver extends Application {
     private int winner = 0;
     private int color = 2;
 
-    
-
     @Override
     public void start(Stage primStage) throws Exception {
         this.primStage = primStage;
         gm.draw(primStage).show();
-        // genstartSpilKnap =gm.getKnap();
+        gm.setTurText(2);
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
@@ -45,7 +43,7 @@ public class GameDriver extends Application {
     private void handleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
-            Point q = new Point((int)event.getX(),(int) event.getY());
+            Point q = new Point((int) event.getX(), (int) event.getY());
             if (gm.isOk(p)) {
 
                 // De første 4 moves
@@ -53,25 +51,27 @@ public class GameDriver extends Application {
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     changeColor();
-                    
-                    // System.out.println("farven er " + color);
+                    if(ruleBoard.getStartPlacement() < 2) {
+                        gm.setTurText(2);
+                    } else {
+                        gm.setTurText(1);
+                    }
                     legalMovesMap = ruleBoard.legalMove(color);
                     if (ruleBoard.getStartPlacement() == 4) {
                         // Da den allerede har ændret farve til den næste brik.
+                        brik.setColorRes();
                         Brik brikPos2 = new Brik(ruleBoard);
                         brikPos2.possibleCircle(legalMovesMap, gm);
                         gm.setTurText(color);
                     }
-                    // System.out.println("De mulige stedder at sætte en brik er " + legalMovesMap);
-                    // printgame(ruleBoard);
                 } else if (ruleBoard.start() == false && legalMovesMap.containsKey(p)) {
                     // En almindelig tur i spillet
                     pass = 0;
                     Brik brikPos = new Brik(ruleBoard);
-                    brikPos.deletePossibleCircle(legalMovesMap, gm);
+                    brikPos.deletePossibleCircle(gm);
+
                     ruleBoard.standardMove(color, p.x, p.y);
                     List<Point> brikVendes = legalMovesMap.get(p);
-
                     Brik brik = new Brik(ruleBoard);
                     gm.getRoot().getChildren().add(brik.setBrik(p));
                     for (int i = 0; i < brikVendes.size(); i++) {
@@ -80,11 +80,7 @@ public class GameDriver extends Application {
                     }
 
                     // Da den allerede har ændret farve til den næste brik.
-                    changeColor();
-                    legalMovesMap = ruleBoard.legalMove(color);
-                    Brik brikPos2 = new Brik(ruleBoard);
-                    brikPos2.possibleCircle(legalMovesMap, gm);
-                    gm.setTurText(color);
+                    addPosCir();
                 }
 
                 while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
@@ -98,24 +94,17 @@ public class GameDriver extends Application {
                     // Betyder at der skal meldes pas
                     System.out.println("pass");
                     pass++;
-                    changeColor();
-                    legalMovesMap = ruleBoard.legalMove(color);
-                    Brik brikPos2 = new Brik(ruleBoard);
-                    brikPos2.possibleCircle(legalMovesMap, gm);
-                    gm.setTurText(color);
-
+                    addPosCir();
                 }
             } else if (gm.knapIsPressed(q)) {
                 restartGame();
             }
-        } /*
-           * else {
-           * System.out.println(event.getTarget());
-           * gm.getRoot().getChildren().remove(event.getTarget());
-           * }
-           */
+        }
     }
 
+    /**
+     * Ændre hvilken farve tur det er
+     */
     private void changeColor() {
         if (color == 1) {
             color = 2;
@@ -124,8 +113,32 @@ public class GameDriver extends Application {
         }
     }
 
-    public static void printgame(Regler rule) {
-        int[][] brat = rule.getGameboard();
+    /**
+     * Den genstarter brættet og sætter et nyt spillebræt op
+     */
+    private void restartGame() {
+
+        gm = new GameBoard(size);
+        ruleBoard = new Regler(size - 1);
+        gm.draw(primStage).show();
+        gm.setTurText(2);
+        color = 2;
+        gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
+    }
+
+    /**
+     * Tilføjer cirkler hvor der er mulighed for at ligge en cirkel
+     */
+    private void addPosCir() {
+        changeColor();
+        legalMovesMap = ruleBoard.legalMove(color);
+        Brik brikPos = new Brik(ruleBoard);
+        brikPos.possibleCircle(legalMovesMap, gm);
+        gm.setTurText(color);
+    }
+
+    public static void printgame(Regler hej) {
+        int[][] brat = hej.getGameboard();
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
 
@@ -133,13 +146,6 @@ public class GameDriver extends Application {
             }
             System.out.println();
         }
-    }
-
-    public void restartGame() {
-        gm = new GameBoard(size);
-        ruleBoard = new Regler(size - 1);
-        gm.draw(primStage).show();
-        gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
 }
