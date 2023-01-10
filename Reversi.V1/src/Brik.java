@@ -1,4 +1,4 @@
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +42,9 @@ public class Brik {
         // Ændre farven fra starten så der er to af hver efter hinanden
         if (regler.getStartPlacement() <= 4) {
             if (regler.getStartPlacement() > 2) {
-                circle.setFill(Paint.valueOf("white"));
+                circle.setFill(Color.WHITE);
             } else {
-                circle.setFill(Paint.valueOf("black"));
+                circle.setFill(Color.BLACK);
             }
 
         } else {
@@ -89,7 +89,7 @@ public class Brik {
         for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
             Circle circle = new Circle();
             circle.setFill(null);
-            circle.setStroke(Paint.valueOf("blue"));
+            circle.setStroke(Color.BLUE);
             circle.setStrokeWidth(2);
 
             // Sætter den i midten af en firkant
@@ -129,10 +129,10 @@ public class Brik {
      */
     public void setColor() {
         if (color == 1) {
-            circle.setFill(Paint.valueOf("white"));
+            circle.setFill(Color.WHITE);
             color = 2;
         } else if (color == 2) {
-            circle.setFill(Paint.valueOf("black"));
+            circle.setFill(Color.BLACK);
             color = 1;
         }
     }
@@ -142,9 +142,9 @@ public class Brik {
      */
     public void setColorFlip() {
         if (color == 1) {
-            circle.setFill(Paint.valueOf("black"));
+            circle.setFill(Color.BLACK);
         } else if (color == 2) {
-            circle.setFill(Paint.valueOf("white"));
+            circle.setFill(Color.WHITE);
         }
     }
 
