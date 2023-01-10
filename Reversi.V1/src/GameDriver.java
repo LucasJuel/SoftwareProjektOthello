@@ -16,7 +16,7 @@ public class GameDriver extends Application {
     }
 
     // Iniciater variabler
-    private int size = 8;
+    private int size = ReversiMenu.getSize();
     GameBoard gm = new GameBoard(size);
     Regler ruleBoard = new Regler(size - 1);
     Button genstartSpilKnap;
