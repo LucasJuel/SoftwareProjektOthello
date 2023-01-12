@@ -2,26 +2,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
-
 import java.awt.Point;
 
 public class Brik_v2 {
 
-    static int color = 1;
-    ArrayList<Circle> circles = new ArrayList<Circle>();
-    static ArrayList<Circle> delPossiblePosCircle;
-    Circle circle;
-    Regler r;
-    boolean checkStart;
+    private static int color = 1;
+    private ArrayList<Circle> circles = new ArrayList<Circle>();
+    private Circle circle;
+    private Regler_v2 r;
 
     /**
-     * initialize Brik med objektet regler fra det spil der er i gang
+     * Initialize Brik_v2 og sætter en brik på Point p på spille brættet
      * 
-     * @param r Objektet Regler
+     * @param r  Objektet Regler
+     * @param gm Objektet GameBoard
+     * @param p  et Point objekt med positionen på brættet, fra 0 til 7 hvis
+     *           størrelsen er 8
      */
-    public Brik_v2(Regler r, GameBoard gm, Point p) {
+    public Brik_v2(Regler_v2 r, GameBoard gm, Point p) {
         this.r = r;
-        checkStart = r.start();
         circle = new Circle();
         circle.setCenterX(p.x * 100 + 50);
         circle.setCenterY(p.y * 100 + 50);
@@ -33,51 +32,60 @@ public class Brik_v2 {
     }
 
     /**
-     * Sætter en brik på spille brættet
+     * Ændre farven af circle objektet efter parameter farve
      * 
-     * @param p et Point objekt med positionen på brættet, fra 0 til 7 hvis
-     *          størrelsen er 8
-     * @return retunere et Circle objekt
+     * @param farve farve af brik, 1=hvid, 2=sort, 3=muligbrik, 4=fjern mulig brik
      */
-    public Circle setBrik(Point p) {
-        circle = new Circle();
-        circle.setCenterX(p.x * 100 + 50);
-        circle.setCenterY(p.y * 100 + 50);
-        circle.setRadius(40);
-        circles.add(circle);
-        circle.setFill(null);
-        return circle;
-    }
-
-    // gør vi kan ændre farven af spillerene i menyen
-    public void setColor(int farve) {
-        if (farve == 1){
-            circle.setFill(Color.rgb(2, 3, 4));
+    public void setMuligColor(int farve) {
+        if (farve == 1) {
+            circle.setFill(Color.rgb(255, 255, 255));
         } else if (farve == 2) {
-            circle.setFill(Color.rgb(2, 3, 4));
-            
+            circle.setFill(Color.rgb(0, 0, 0));
         } else if (farve == 3) {
-            //Flipfarve
-            circle.setFill(Color.rgb(2, 3, 4));
+            // Flipfarve
+            circle.setStroke(Color.BLUE);
+            circle.setStrokeWidth(2);
+        } else if (farve == 4) {
+            circle.setStroke(null);
+            circle.setStrokeWidth(1);
         }
-
-        
     }
 
-
+    /**
+     * Ændre farven af circle uden et argument, den bruger static color for at ændre
+     * farven
+     */
     public void setColor() {
         if (r.getStartPlacement() <= 4) {
             if (r.getStartPlacement() > 2) {
                 circle.setFill(Paint.valueOf("white"));
+                color = 2;
             } else {
                 circle.setFill(Paint.valueOf("black"));
+                color = 1;
             }
-
         } else {
             // setColor();
+            if (color == 1) {
+                circle.setFill(Color.rgb(255, 255, 255));
+                color = 2;
+            } else if (color == 2) {
+                circle.setFill(Color.rgb(0, 0, 0));
+                color = 1;
+            }
         }
-
     }
 
+    /**
+     * Til at ændre static int variablen color uden brug af et objekt, derfor
+     * static, når der er static og det er den næstes tur
+     */
+    public static void setPassColor() {
+        if (color == 1) {
+            color = 2;
+        } else {
+            color = 1;
+        }
+    }
 
 }
