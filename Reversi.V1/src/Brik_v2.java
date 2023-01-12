@@ -28,6 +28,7 @@ public class Brik_v2 {
         circle.setRadius(40);
         circles.add(circle);
         circle.setFill(null);
+        circle.setFill(Paint.valueOf("white"));
         gm.getRoot().getChildren().add(circle);
 
     }
