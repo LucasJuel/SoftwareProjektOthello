@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.awt.Point;
 
 public class Regler {
@@ -228,5 +229,21 @@ public class Regler {
      */
     public int getStartPlacement() {
         return startplacements;
+    }
+
+    public Map<Point, List<Point>> bestMove() {
+        Entry<Point, List<Point>> possibleMove = null;
+
+        for (Entry<Point, List<Point>> mostFlips : legalMap.entrySet()) {
+            if (possibleMove == null || mostFlips.getValue().size() > possibleMove.getValue().size()) {
+                possibleMove = mostFlips;
+            }
+        }
+
+        List<Point> way = possibleMove.getValue();
+        Point move = possibleMove.getKey();
+        Map<Point, List<Point>> bestMove = new HashMap<>();
+        bestMove.put(move, way);
+        return bestMove;
     }
 }
