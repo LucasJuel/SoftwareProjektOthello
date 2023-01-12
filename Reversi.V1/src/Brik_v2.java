@@ -28,7 +28,6 @@ public class Brik_v2 {
         circle.setRadius(40);
         circles.add(circle);
         circle.setFill(null);
-        circle.setFill(Paint.valueOf("white"));
         gm.getRoot().getChildren().add(circle);
 
     }
@@ -62,6 +61,11 @@ public class Brik_v2 {
             circle.setFill(Color.rgb(2, 3, 4));
         }
 
+        
+    }
+
+
+    public void setColor() {
         if (r.getStartPlacement() <= 4) {
             if (r.getStartPlacement() > 2) {
                 circle.setFill(Paint.valueOf("white"));

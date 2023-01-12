@@ -51,7 +51,7 @@ public class GameDriver_v2 extends Application {
 
                 // De første 4 moves
                 if (ruleBoard.startMoves(p.x, p.y)) {
-                    circleBoard.get(p.x).get(p.y).setColor(2);
+                    circleBoard.get(p.x).get(p.y).setColor();
                     changeColor();
                     if (ruleBoard.getStartPlacement() < 2) {
                         gm.setTurText(2);
