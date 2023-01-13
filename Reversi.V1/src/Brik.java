@@ -161,20 +161,20 @@ public class Brik {
     }
 
 
-    public static void addGlowOnHover(final Node node) {
-        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                node.setEffect(glow);
-            }
-        });
-        node.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                node.setEffect(null);
-            }
-        });
-    }
+    // public static void addGlowOnHover(final Circle circle) {
+    //     circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
+    //         @Override
+    //         public void handle(MouseEvent mouseEvent) {
+    //             node.setEffect(glow);
+    //         }
+    //     });
+    //     node.setOnMouseExited(new EventHandler<MouseEvent>() {
+    //         @Override
+    //         public void handle(MouseEvent mouseEvent) {
+    //             node.setEffect(null);
+    //         }
+    //     });
+    // }
 
 
 }
