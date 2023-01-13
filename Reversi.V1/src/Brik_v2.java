@@ -65,7 +65,6 @@ public class Brik_v2 {
                 color = 1;
             }
         } else {
-            // setColor();
             if (color == 1) {
                 circle.setFill(Color.rgb(255, 255, 255));
                 color = 2;
