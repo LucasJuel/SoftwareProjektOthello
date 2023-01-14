@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.awt.Point;
+import java.text.RuleBasedCollator;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class GameDriver_v2 extends Application {
     Stage primStage;
 
     private Map<Point, List<Point>> legalMovesMap = new HashMap<>();
+    SaveNContinue sav;
     ArrayList<Circle> posCircles = new ArrayList<Circle>();
     ArrayList<ArrayList<Brik_v2>> circleBoard;
     ArrayList<Brik_v2> circleBoardRække;
@@ -91,7 +93,9 @@ public class GameDriver_v2 extends Application {
                     for (int i = 0; i < brikVendes.size(); i++) {
                         circleBoard.get(brikVendes.get(i).x).get(brikVendes.get(i).y).setMuligColor(color);
                     }
-
+                    sav = new SaveNContinue(ruleBoard.getGameboard());
+                    System.out.println(ruleBoard.getGameboard());
+                    sav.writeToFile();
                     // Da den allerede har ændret farve til den næste brik.
                     addPosCir();
                 }

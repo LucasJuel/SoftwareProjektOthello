@@ -145,6 +145,7 @@ public class Regler {
      * @return retunere spillebrættet som int[][], hvor 1 er hvid og 2 er sort
      */
     public int[][] getGameboard() {
+        System.out.println(braet);
         return braet;
     }
 
