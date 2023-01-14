@@ -28,7 +28,7 @@ public class GameBoard {
         this.size = size;
         this.turText = new Text();
         this.vinderText = new Text();
-        this.genstart= new Button();
+        this.genstart = new Button();
         root = new Group();
         scene = new Scene(root);
     }
@@ -40,43 +40,45 @@ public class GameBoard {
      * @return Stagen der er i gang med at blive brugt
      */
     public Stage draw(Stage primStage) {
-        //sætter en variable height fra antal brikker til antal pixels.
+        // sætter en variable height fra antal brikker til antal pixels.
         height = size * 100;
         primStage.setTitle("Reversi");
 
-        //Sætter højde og bredde og gør plads til en menu til højre for spillet.(40 og 17 er tilpassede værdier da der var nogle problemer med vores stage.)
+        // Sætter højde og bredde og gør plads til en menu til højre for spillet.(40 og
+        // 17 er tilpassede værdier da der var nogle problemer med vores stage.)
         primStage.setHeight(height + 40);
         primStage.setWidth(height + 17 + 200);
 
-        //tilføjer scenen og gør man ikke kan resize det.
+        // tilføjer scenen og gør man ikke kan resize det.
         primStage.setScene(scene);
         primStage.setResizable(false);
-        //Gør boardet grønt, og tilføjer et icon til vinduet.
+        // Gør boardet grønt, og tilføjer et icon til vinduet.
         scene.setFill(Color.GREEN);
         primStage.getIcons().add(new Image("file:./img/IconReversi.png"));
 
-        //Et for loop til at sætte stregener på boardet.
+        // Et for loop til at sætte stregener på boardet.
         for (int i = 0; i < height + 100; i += 100) {
-            //Horisontale streger.
+            // Horisontale streger.
             Line xGridline = new Line(i, 0, i, height);
             xGridline.setFill(Color.BLACK);
             root.getChildren().add(xGridline);
-            //Vertikale streger.
+            // Vertikale streger.
             Line yGridline = new Line(0, i, height, i);
             yGridline.setFill(Color.BLACK);
             root.getChildren().add(yGridline);
         }
-        //Text og knap til at kunne spille igen.
+        // Text og knap til at kunne spille igen.
         setText(turText, 825, 200, 30);
         setText(vinderText, 825, 400, 30);
         setButton(genstart, 825, 600, 150, 75, 25, "66, 135, 245", "Spil igen");
-        
-        //Og så returnere vi vores stage.
+
+        // Og så returnere vi vores stage.
         return primStage;
     }
 
     /**
      * Ændrer tekst og farve for hvem der har tur.
+     * 
      * @param farve
      */
     public void setTurText(int farve) {
@@ -91,6 +93,7 @@ public class GameBoard {
 
     /**
      * Sætter den passende tekst når spillet er afgjort.
+     * 
      * @param farve
      */
     public void setVinderText(int farve) {
@@ -109,13 +112,11 @@ public class GameBoard {
     }
 
     /**
-     * 
-     * @param text - hvad der skal stå.
-     * @param x - placering på x-aksen
-     * @param y - placering på y-aksen
-     * @param fSize - font size.
-     * 
      * Sætter en tekst baseret på givne parametre.
+     * @param text  - hvad der skal stå.
+     * @param x     - placering på x-aksen
+     * @param y     - placering på y-aksen
+     * @param fSize - font size.
      */
     public void setText(Text text, int x, int y, int fSize) {
         root.getChildren().add(text);
@@ -125,30 +126,30 @@ public class GameBoard {
     }
 
     /**
-     * 
-     * @param but - knap objekt.
-     * @param x - placering på x-aksen.
-     * @param y - placering på y-aksen.
-     * @param xSize - bredde af knap.
-     * @param ySize - højde af knap.
-     * @param fSize - font størrelse.
-     * @param rgbString - tilføj farve i RGB.
-     * @param text - hvad der skal stå.
-     * 
      * Laver en knap baseret på parametre.
+     * 
+     * @param but       - knap objekt.
+     * @param x         - placering på x-aksen.
+     * @param y         - placering på y-aksen.
+     * @param xSize     - bredde af knap.
+     * @param ySize     - højde af knap.
+     * @param fSize     - font størrelse.
+     * @param rgbString - tilføj farve i RGB.
+     * @param text      - hvad der skal stå. 
      */
     public void setButton(Button but, int x, int y, int xSize, int ySize, int fSize, String rgbString, String text) {
         root.getChildren().add(but);
-        but.setPrefSize(xSize,ySize);
+        but.setPrefSize(xSize, ySize);
         but.setLayoutX(x);
         but.setLayoutY(y);
-        but.setStyle("-fx-background-color: rgb(" + rgbString +"); -fx-font-size: " + fSize + "px; -fx-cursor: hand");
+        but.setStyle("-fx-background-color: rgb(" + rgbString + "); -fx-font-size: " + fSize + "px; -fx-cursor: hand");
         but.setTextFill(Color.WHITE);
         but.setText(text);
     }
 
     /**
      * Returnere et scene fra et GameBoard.
+     * 
      * @return Scene
      */
     public Scene getGMScene() {
@@ -156,7 +157,8 @@ public class GameBoard {
     }
 
     /**
-     * Returnere root fra et stage. 
+     * Returnere root fra et stage.
+     * 
      * @return root
      */
     public Group getRoot() {
@@ -165,6 +167,7 @@ public class GameBoard {
 
     /**
      * Tjekker om et klik er inde for brættet(ex. menuen).
+     * 
      * @param p - Point
      * @return boolean baseret på om det er inde eller ude.
      */
@@ -178,11 +181,13 @@ public class GameBoard {
 
     /**
      * Tjekker om en knap er klikket.
+     * 
      * @param p - Point
      * @return Boolean om knappen er klikket.
      */
-    public Boolean knapIsPressed (Point p) {
-        if (genstart.getLayoutX() < p.x && p.x < genstart.getLayoutX() + 150 && genstart.getLayoutY() < p.y && p.y < genstart.getLayoutY() + 75) {
+    public Boolean knapIsPressed(Point p) {
+        if (genstart.getLayoutX() < p.x && p.x < genstart.getLayoutX() + 150 && genstart.getLayoutY() < p.y
+                && p.y < genstart.getLayoutY() + 75) {
             return true;
         } else {
             return false;
