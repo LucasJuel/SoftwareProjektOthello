@@ -50,7 +50,6 @@ public class GameDriver extends Application {
 
             // Tjekker om brugeren trykker inde på spillebrættet
             if (gm.isOk(p)) {
-
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
                 if (ruleBoard.startMoves(p.x, p.y)) {
