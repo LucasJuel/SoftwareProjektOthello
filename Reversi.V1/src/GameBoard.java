@@ -15,6 +15,9 @@ public class GameBoard {
     private Group root;
     private Scene scene;
     private Button genstart;
+    private Button save;
+    private Button load;
+
     int height;
     private Text turText;
     private Text vinderText;
@@ -29,6 +32,8 @@ public class GameBoard {
         this.turText = new Text();
         this.vinderText = new Text();
         this.genstart = new Button();
+        this.save = new Button();
+        this.load = new Button();
         root = new Group();
         scene = new Scene(root);
     }
@@ -71,7 +76,8 @@ public class GameBoard {
         setText(turText, 825, 200, 30);
         setText(vinderText, 825, 400, 30);
         setButton(genstart, 825, 600, 150, 75, 25, "66, 135, 245", "Spil igen");
-
+        setButton(save, 825, 500, 150, 75, 25, "66, 135, 245", "Gem spillet");
+        setButton(load, 825, 400, 150, 75, 25, "66, 135, 245", "load spillet");
         // Og så returnere vi vores stage.
         return primStage;
     }
@@ -185,9 +191,27 @@ public class GameBoard {
      * @param p - Point
      * @return Boolean om knappen er klikket.
      */
-    public Boolean knapIsPressed(Point p) {
+    public Boolean genstartIsPressed(Point p) {
         if (genstart.getLayoutX() < p.x && p.x < genstart.getLayoutX() + 150 && genstart.getLayoutY() < p.y
                 && p.y < genstart.getLayoutY() + 75) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean saveIsPressed(Point p) {
+        if (save.getLayoutX() < p.x && p.x < save.getLayoutX() + 150 && save.getLayoutY() < p.y
+                && p.y < save.getLayoutY() + 75) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean loadIsPressed(Point p) {
+        if (load.getLayoutX() < p.x && p.x < load.getLayoutX() + 150 && load.getLayoutY() < p.y
+                && p.y < load.getLayoutY() + 75) {
             return true;
         } else {
             return false;

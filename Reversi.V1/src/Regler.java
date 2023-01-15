@@ -145,7 +145,6 @@ public class Regler {
      * @return retunere spillebrættet som int[][], hvor 1 er hvid og 2 er sort
      */
     public int[][] getGameboard() {
-        System.out.println(braet);
         return braet;
     }
 
@@ -220,6 +219,10 @@ public class Regler {
             // System.out.println(startplacements);
             return false;
         }
+    }
+
+    public void skipStart(){
+        startplacements = 4;
     }
 
     /**
