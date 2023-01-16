@@ -30,7 +30,7 @@ public class Brik_v2 {
         gm.getRoot().getChildren().add(circle);
     }
 
-    public Brik_v2(Regler r, GameBoard gm, Point p, String c) {
+    public Brik_v2(Regler r, GameBoard gm, Point p, String c, int turn) {
         this.r = r;
         circle = new Circle();
         circle.setCenterX(p.x * 100 + 50);
@@ -108,6 +108,10 @@ public class Brik_v2 {
 
     public int getColorAtTurn(){
         return color;
+    }
+
+    public static void setColorAtTurn(int loadedColor){
+        color = loadedColor;
     }
 
 }

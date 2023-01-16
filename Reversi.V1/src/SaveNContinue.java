@@ -9,31 +9,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SaveNContinue {    
+public class SaveNContinue {
     private int[][] data;
     JSONArray moves = new JSONArray();
     JSONObject brik = new JSONObject();
     JSONObject moveArr = new JSONObject();
     HashMap<String, int[]> intArrToHM = new HashMap<String, int[]>();
     int colorAtTurn;
-    
-    public SaveNContinue(int[][] data, int colorAtTurn){
+
+    public SaveNContinue(int[][] data, int colorAtTurn) {
         this.data = data;
         this.colorAtTurn = colorAtTurn;
     }
 
-
-    public void writeToFile(){
+    public void writeToFile() {
 
         String dataToString = Arrays.deepToString(data);
         JSONObject colorJson = new JSONObject();
         colorJson.put("Color", colorAtTurn);
         try {
-            BufferedWriter file = new BufferedWriter(new FileWriter("./save.json", true));
+            BufferedWriter file = new BufferedWriter(new FileWriter("./save.json"));
             file.write(dataToString);
             file.close();
 
-            BufferedWriter fileColor = new BufferedWriter(new FileWriter("./saveColor.json", true));
+            BufferedWriter fileColor = new BufferedWriter(new FileWriter("./saveColor.json"));
             fileColor.write(colorJson.toJSONString());
             fileColor.close();
         } catch (IOException e) {
@@ -43,66 +42,72 @@ public class SaveNContinue {
 
     }
 
-    public static String readFileAsString(String file) throws Exception{
+    public int getColor() {
+        System.out.println(colorAtTurn);
+        return colorAtTurn;
+    }
+
+    public static String readFileAsString(String file) throws Exception {
 
         return new String(Files.readAllBytes(Paths.get(file)));
     }
 
-    private static String[][] stringToDeep(String str) {
-        int row = 0;
-        int col = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '[') {
-                row++;
-            }
-        }
-        row--;
-        for (int i = 0;; i++) {
-            if (str.charAt(i) == ',') {
+    private static String[][] convertStringToDeep(String boardStr) {
+        int row = 0, col = 0;
+        for (int i = 0; i < boardStr.length(); i++) {
+            if (boardStr.charAt(i) == '[') {
                 col++;
             }
-            if (str.charAt(i) == ']') {
+        }
+        col--;
+
+        for (int i = 0; i < boardStr.length(); i++) {
+            if (boardStr.charAt(i) == ',') {
+                row++;
+            }
+            if (boardStr.charAt(i) == ']') {
+                row++;
                 break;
             }
         }
-        col++;
-        String[][] out = new String[row][col];
-        str = str.replaceAll("\\[", "").replaceAll("\\]", "");
-        String[] s1 = str.split(", ");
-        int j = -1;
-        for (int i = 0; i < s1.length; i++) {
-            if (i % col == 0) {
-                j++;
+
+        String[][] charArr = new String[col][row];
+        boardStr = boardStr.replaceAll("\\[", "").replaceAll("\\]", "");
+        String[] placeholder = boardStr.split(", ");
+
+        int x = -1;
+        for (int i = 0; i < placeholder.length; i++) {
+            if (i % row == 0) {
+                x++;
             }
-            out[j][i % col] = s1[i];
+            charArr[x][i % row] = placeholder[i];
         }
-        return out;
+        return charArr;
+    }
+
+    public String[][] getSavedBoard() {
+
+        String file = "./save.json";
+        String json = null;
+        try {
+            json = readFileAsString(file);
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-    
-        public String[][] getSavedBoard(){
 
-            String file = "./save.json";
-            String json = null;
-            try {
-                json = readFileAsString(file);
-    
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        // String[][] brat = stringToDeep(json);
 
-            //String[][] brat = stringToDeep(json);
+        // for (int i = 0; i <= 7; i++) {
+        // for (int j = 0; j <= 7; j++) {
 
-            // for (int i = 0; i <= 7; i++) {
-            //     for (int j = 0; j <= 7; j++) {
-    
-            //         System.out.print(brat[j][i] + " ");
-            //     }
-            //     System.out.println();
-            // }
+        // System.out.print(brat[j][i] + " ");
+        // }
+        // System.out.println();
+        // }
 
-            return stringToDeep(json);
-        }
+        return convertStringToDeep(json);
+    }
 
 }
-

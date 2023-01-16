@@ -176,6 +176,7 @@ public class Regler {
      */
     public void standardMoveDev(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
+        startplacements++;
     }
 
     /**
@@ -185,6 +186,7 @@ public class Regler {
      * @return tal, 0 = uafgjort, 1 hvid vinder og 2 sort vinder
      */
     public int winner() {
+
         int hvid = 0;
         int sort = 0;
         for (int i = 0; i < size; i++) {
@@ -232,5 +234,15 @@ public class Regler {
      */
     public int getStartPlacement() {
         return startplacements;
+    }
+
+    public void printgame() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+
+                System.out.print(braet[j][i] + " ");
+            }
+            System.out.println();
+        }
     }
 }

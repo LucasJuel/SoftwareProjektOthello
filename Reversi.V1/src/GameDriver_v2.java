@@ -30,6 +30,7 @@ public class GameDriver_v2 extends Application {
     private int pass = 0;
     private int winner = 0;
     private int color = 2;
+    private boolean isLoaded = false;
     Point q;
     SaveNContinue save = new SaveNContinue(null, color);
 
@@ -60,7 +61,7 @@ public class GameDriver_v2 extends Application {
 
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
-                if (ruleBoard.startMoves(p.x, p.y)) {
+                if (ruleBoard.startMoves(p.x, p.y) && isLoaded == false) {
 
                     // Laver en brik med farve og viser den og derefter holder styr på hvilken farve
                     // der skal være den næste
@@ -146,6 +147,7 @@ public class GameDriver_v2 extends Application {
         gm.draw(primStage).show();
         gm.setTurText(2);
         color = 2;
+        pass = 0;
 
         circleBoard = new ArrayList<ArrayList<Brik_v2>>(size);
 
@@ -174,25 +176,43 @@ public class GameDriver_v2 extends Application {
     }
 
     private void loadGame(){
-        gm = new GameBoard(size);
-        ruleBoard = new Regler(size - 1);
-        gm.draw(primStage).show();
-        gm.setTurText(2);
+        restartGame();
+
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
-        circleBoard = new ArrayList<ArrayList<Brik_v2>>(size);
-        ruleBoard.skipStart();
 
         for (int i = 0; i <= 7; i++) {
-            circleBoardRække = new ArrayList<Brik_v2>(size);
             for (int j = 0; j <= 7; j++) {
-                Point p = new Point(i, j);
                 System.out.print("plads: " + j + "" + i + "farve: " + save.getSavedBoard()[j][i] + " | ");
-                Brik_v2 brik = new Brik_v2(ruleBoard, gm, p, save.getSavedBoard()[i][j]);
-                circleBoardRække.add(brik);
+                ruleBoard.standardMoveDev(Integer.parseInt(save.getSavedBoard()[j][i]), j, i);
             }
             System.out.println();
         }
+        ruleBoard.printgame();
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                circleBoard.get(i).get(j).setMuligColor(Integer.parseInt(save.getSavedBoard()[i][j]));
+                Brik_v2.setColorAtTurn(Integer.parseInt(save.getSavedBoard()[i][j]));
+            }
+        }
+        legalMovesMap = ruleBoard.legalMove(save.getColor());
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
+
+
+        // ruleBoard.skipStart();
+        // for (int i = 0; i <= 7; i++) {
+        //      circleBoardRække = new ArrayList<Brik_v2>(size);
+
+        //      for (int j = 0; j <= 7; j++) {
+        //         Point p = new Point(i, j);
+
+        //         System.out.print("plads: " + j + "" + i + "farve: " + save.getSavedBoard()[j][i] + " | ");
+
+        //         Brik_v2 brik = new Brik_v2(ruleBoard, gm, p, save.getSavedBoard()[i][j], save.getColor());
+        //         circleBoardRække.add(brik);
+        //      }
+        //      System.out.println();
+        //  }
     }
 
     /**
