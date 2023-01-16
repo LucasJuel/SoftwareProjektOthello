@@ -2,6 +2,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+
 import java.awt.Point;
 
 public class Brik_v2 {
@@ -38,17 +39,32 @@ public class Brik_v2 {
      */
     public void setMuligColor(int farve) {
         if (farve == 1) {
+            // Hvid brik
             circle.setFill(Color.rgb(255, 255, 255));
         } else if (farve == 2) {
+            // Sort brik
             circle.setFill(Color.rgb(0, 0, 0));
         } else if (farve == 3) {
             // Flipfarve
+            circle.setFill(Color.GREEN);
             circle.setStroke(Color.BLUE);
             circle.setStrokeWidth(2);
         } else if (farve == 4) {
+            // Fjern flipfarve
+            circle.setFill(null);
+            circle.setStroke(null);
+            circle.setStrokeWidth(1);
+        } else if (farve == 5) {
+
+            // De brikker der bliver vendt
+            circle.setStrokeWidth(3);
+            setColorStroke();
+        } else if (farve == 6) {
+            // Ændre de brikker der bliver vendt tilbage
             circle.setStroke(null);
             circle.setStrokeWidth(1);
         }
+
     }
 
     /**
@@ -85,6 +101,18 @@ public class Brik_v2 {
         } else {
             color = 1;
         }
+    }
+
+    public void setColorStroke() {
+        if (color == 1) {
+            circle.setStroke(Color.rgb(255, 255, 255));
+        } else if (color == 2) {
+            circle.setStroke(Color.rgb(0, 0, 0));
+        }
+    }
+
+    public Circle getCircle() {
+        return circle;
     }
 
 }

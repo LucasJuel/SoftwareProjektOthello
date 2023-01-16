@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javafx.event.EventHandler;
 
 public class GameDriver_v2 extends Application {
     public static void main(String[] args) {
@@ -50,9 +51,9 @@ public class GameDriver_v2 extends Application {
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
             Point q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
-
+            
             if (gm.isOk(p)) {
-
+                // System.out.println(ruleBoard.getGameboard());
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
                 if (ruleBoard.startMoves(p.x, p.y)) {
@@ -75,8 +76,10 @@ public class GameDriver_v2 extends Application {
 
                     // Sætter antal pass til 0 og sletter alle mulige træk man kan lave
                     pass = 0;
+                    gm.setVinderText(5);
                     for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
                         circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(4);
+                        delFlipCircles(entry.getKey().x, entry.getKey().y);
                     }
 
                     // Opdatere Regler med det træk der bliver lavet
@@ -106,6 +109,13 @@ public class GameDriver_v2 extends Application {
                     }
                     // Betyder at der skal meldes pas
                     System.out.println("pass");
+                    if (color == 1) {
+                        gm.setVinderText(3);
+                    } else if (color == 2) {
+                        gm.setVinderText(4);
+
+                    }
+
                     pass++;
                     addPosCir();
                     // Kalder en static metode
@@ -170,9 +180,63 @@ public class GameDriver_v2 extends Application {
             // Laver en brik for alle steder det er muligt at ligge en ud fra hashmappet
             for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
                 circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(3);
+                addFlipCircles(entry.getKey().x, entry.getKey().y, entry.getValue());
+
             }
             // Ændre farve på tur teksten
             gm.setTurText(color);
         }
     }
+
+    /**
+     * Tilføjer de cirkler der bliver vendt når der bliver trykket på en brik
+     * 
+     * @param x
+     * @param y
+     * @param pList
+     */
+    public void addFlipCircles(int x, int y, List<Point> pList) {
+        circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(5);
+                }
+
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                }
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                }
+            }
+        });
+
+    }
+
+    public void delFlipCircles(int x, int y) {
+        circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+    }
+
 }

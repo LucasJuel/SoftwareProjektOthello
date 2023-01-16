@@ -94,7 +94,9 @@ public class GameBoard {
     /**
      * Sætter den passende tekst når spillet er afgjort.
      * 
-     * @param farve
+     * @param farve 1 = hvid, 2 = sort, 3 = hvid pass, 4 = hvid pass, 5 = resetter
+     *              text, andet = uafgjort
+     * 
      */
     public void setVinderText(int farve) {
         turText.setText(null);
@@ -104,15 +106,24 @@ public class GameBoard {
         } else if (farve == 2) {
             vinderText.setFill(Color.BLACK);
             vinderText.setText("SORT\nVINDER!!");
+        } else if (farve == 3) {
+            vinderText.setFill(Color.WHITE);
+            vinderText.setText("Hvid \nmelder \npass");
+        } else if (farve == 4) {
+            vinderText.setFill(Color.BLACK);
+            vinderText.setText("Sort \nmelder \npass");
+        } else if (farve == 5) {
+            vinderText.setFill(null);
+            vinderText.setText("");
         } else {
             vinderText.setFill(Color.RED);
             vinderText.setText("UAFGJORT");
-
         }
     }
 
     /**
      * Sætter en tekst baseret på givne parametre.
+     * 
      * @param text  - hvad der skal stå.
      * @param x     - placering på x-aksen
      * @param y     - placering på y-aksen
@@ -135,7 +146,7 @@ public class GameBoard {
      * @param ySize     - højde af knap.
      * @param fSize     - font størrelse.
      * @param rgbString - tilføj farve i RGB.
-     * @param text      - hvad der skal stå. 
+     * @param text      - hvad der skal stå.
      */
     public void setButton(Button but, int x, int y, int xSize, int ySize, int fSize, String rgbString, String text) {
         root.getChildren().add(but);
