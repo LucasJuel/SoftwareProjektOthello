@@ -21,15 +21,18 @@ public class GameDriver_v2 extends Application {
     Regler ruleBoard = new Regler(size - 1);
     Button genstartSpilKnap;
     Stage primStage;
-    SaveNContinue save = new SaveNContinue(null);
 
     private Map<Point, List<Point>> legalMovesMap = new HashMap<>();
     ArrayList<Circle> posCircles = new ArrayList<Circle>();
     ArrayList<ArrayList<Brik_v2>> circleBoard;
     ArrayList<Brik_v2> circleBoardRække;
+    Brik_v2 brikobj;
     private int pass = 0;
     private int winner = 0;
     private int color = 2;
+    Point q;
+    SaveNContinue save = new SaveNContinue(null, color);
+
 
     @Override
     public void start(Stage primStage) throws Exception {
@@ -50,7 +53,7 @@ public class GameDriver_v2 extends Application {
             // Laver to point for hvor på brættet der trykkes eller hvor på skærmen
 
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
-            Point q = new Point((int) event.getX(), (int) event.getY());
+            q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
 
             if (gm.isOk(p)) {
@@ -118,7 +121,7 @@ public class GameDriver_v2 extends Application {
             } else if (gm.saveIsPressed(q)){
                 saveGame();
             } else if (gm.loadIsPressed(q)){
-                loadGame();
+                loadGame();                
             }
         }
     }
@@ -165,7 +168,8 @@ public class GameDriver_v2 extends Application {
 
     private void saveGame(){
         System.out.println("hej");
-        save = new SaveNContinue(ruleBoard.getGameboard());
+        brikobj = new Brik_v2(ruleBoard, gm, q);
+        save = new SaveNContinue(ruleBoard.getGameboard(), brikobj.getColorAtTurn());
         save.writeToFile();
     }
 
@@ -174,7 +178,7 @@ public class GameDriver_v2 extends Application {
         ruleBoard = new Regler(size - 1);
         gm.draw(primStage).show();
         gm.setTurText(2);
-        save = new SaveNContinue(ruleBoard.getGameboard());
+        save = new SaveNContinue(ruleBoard.getGameboard(), color);
         circleBoard = new ArrayList<ArrayList<Brik_v2>>(size);
         ruleBoard.skipStart();
 

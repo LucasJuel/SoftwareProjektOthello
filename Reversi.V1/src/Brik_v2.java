@@ -106,4 +106,8 @@ public class Brik_v2 {
         }
     }
 
+    public int getColorAtTurn(){
+        return color;
+    }
+
 }

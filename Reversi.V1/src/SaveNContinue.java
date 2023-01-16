@@ -3,6 +3,7 @@ import java.util.Arrays;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,20 +15,27 @@ public class SaveNContinue {
     JSONObject brik = new JSONObject();
     JSONObject moveArr = new JSONObject();
     HashMap<String, int[]> intArrToHM = new HashMap<String, int[]>();
-
+    int colorAtTurn;
     
-    public SaveNContinue(int[][] data){
+    public SaveNContinue(int[][] data, int colorAtTurn){
         this.data = data;
+        this.colorAtTurn = colorAtTurn;
     }
 
 
     public void writeToFile(){
 
         String dataToString = Arrays.deepToString(data);
+        JSONObject colorJson = new JSONObject();
+        colorJson.put("Color", colorAtTurn);
         try {
-            FileWriter file = new FileWriter("./save.json");
+            BufferedWriter file = new BufferedWriter(new FileWriter("./save.json", true));
             file.write(dataToString);
             file.close();
+
+            BufferedWriter fileColor = new BufferedWriter(new FileWriter("./saveColor.json", true));
+            fileColor.write(colorJson.toJSONString());
+            fileColor.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
