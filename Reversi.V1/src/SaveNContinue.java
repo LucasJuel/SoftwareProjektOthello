@@ -43,6 +43,14 @@ public class SaveNContinue {
     }
 
     public int getColor() {
+        try {
+            
+            String numberOnly= readFileAsString("./saveColor.json").replaceAll("[^0-9]", "");
+            colorAtTurn = Integer.parseInt(numberOnly);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.out.println(colorAtTurn);
         return colorAtTurn;
     }

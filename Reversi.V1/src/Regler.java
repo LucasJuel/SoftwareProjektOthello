@@ -176,7 +176,9 @@ public class Regler {
      */
     public void standardMoveDev(int farve, int placementx, int placementy) {
         this.braet[placementx][placementy] = farve;
-        startplacements++;
+        if (farve == 1 || farve == 2) {
+            startplacements++;
+        }
     }
 
     /**

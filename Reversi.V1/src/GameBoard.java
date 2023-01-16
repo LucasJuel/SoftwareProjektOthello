@@ -74,7 +74,7 @@ public class GameBoard {
         }
         // Text og knap til at kunne spille igen.
         setText(turText, 825, 200, 30);
-        setText(vinderText, 825, 400, 30);
+        setText(vinderText, 825, 300, 30);
         setButton(genstart, 825, 600, 150, 75, 25, "66, 135, 245", "Spil igen");
         setButton(save, 825, 500, 150, 75, 25, "66, 135, 245", "Gem spillet");
         setButton(load, 825, 400, 150, 75, 25, "66, 135, 245", "load spillet");
@@ -100,7 +100,9 @@ public class GameBoard {
     /**
      * Sætter den passende tekst når spillet er afgjort.
      * 
-     * @param farve
+     * @param farve 1 = hvid, 2 = sort, 3 = hvid pass, 4 = hvid pass, 5 = resetter
+     *              text, andet = uafgjort
+     * 
      */
     public void setVinderText(int farve) {
         turText.setText(null);
@@ -110,10 +112,18 @@ public class GameBoard {
         } else if (farve == 2) {
             vinderText.setFill(Color.BLACK);
             vinderText.setText("SORT\nVINDER!!");
+        } else if (farve == 3) {
+            vinderText.setFill(Color.WHITE);
+            vinderText.setText("Hvid \nmelder \npass");
+        } else if (farve == 4) {
+            vinderText.setFill(Color.BLACK);
+            vinderText.setText("Sort \nmelder \npass");
+        } else if (farve == 5) {
+            vinderText.setFill(null);
+            vinderText.setText("");
         } else {
             vinderText.setFill(Color.RED);
             vinderText.setText("UAFGJORT");
-
         }
     }
 

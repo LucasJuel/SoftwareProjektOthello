@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -31,9 +32,9 @@ public class GameDriver_v2 extends Application {
     private int winner = 0;
     private int color = 2;
     private boolean isLoaded = false;
+    private boolean isDone = false;
     Point q;
     SaveNContinue save = new SaveNContinue(null, color);
-
 
     @Override
     public void start(Stage primStage) throws Exception {
@@ -57,7 +58,7 @@ public class GameDriver_v2 extends Application {
             q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
 
-            if (gm.isOk(p)) {
+            if (gm.isOk(p) && !isDone) {
 
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
@@ -81,8 +82,10 @@ public class GameDriver_v2 extends Application {
 
                     // Sætter antal pass til 0 og sletter alle mulige træk man kan lave
                     pass = 0;
+                    gm.setVinderText(5);
                     for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
                         circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(4);
+                        delFlipCircles(entry.getKey().x, entry.getKey().y);
                     }
 
                     // Opdatere Regler med det træk der bliver lavet
@@ -108,10 +111,17 @@ public class GameDriver_v2 extends Application {
                         winner = ruleBoard.winner();
                         System.out.println("winner er " + winner);
                         gm.setVinderText(winner);
+                        isDone = true;
                         break;
                     }
                     // Betyder at der skal meldes pas
                     System.out.println("pass");
+                    if (color == 1) {
+                        gm.setVinderText(3);
+                    } else if (color == 2) {
+                        gm.setVinderText(4);
+                    }
+
                     pass++;
                     addPosCir();
                     // Kalder en static metode
@@ -119,10 +129,10 @@ public class GameDriver_v2 extends Application {
                 }
             } else if (gm.genstartIsPressed(q)) {
                 restartGame();
-            } else if (gm.saveIsPressed(q)){
+            } else if (gm.saveIsPressed(q)) {
                 saveGame();
-            } else if (gm.loadIsPressed(q)){
-                loadGame();                
+            } else if (gm.loadIsPressed(q)) {
+                loadGame();
             }
         }
     }
@@ -146,6 +156,7 @@ public class GameDriver_v2 extends Application {
         ruleBoard = new Regler(size - 1);
         gm.draw(primStage).show();
         gm.setTurText(2);
+        isDone = false;
         color = 2;
         pass = 0;
 
@@ -168,51 +179,40 @@ public class GameDriver_v2 extends Application {
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
-    private void saveGame(){
-        System.out.println("hej");
-        brikobj = new Brik_v2(ruleBoard, gm, q);
-        save = new SaveNContinue(ruleBoard.getGameboard(), brikobj.getColorAtTurn());
+    private void saveGame() {
+        save = new SaveNContinue(ruleBoard.getGameboard(), color);
         save.writeToFile();
     }
 
-    private void loadGame(){
+    private void loadGame() {
         restartGame();
 
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
 
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
-                System.out.print("plads: " + j + "" + i + "farve: " + save.getSavedBoard()[j][i] + " | ");
+                // System.out.print("plads: " + j + "" + i + "farve: " +
+                // save.getSavedBoard()[j][i] + " | ");
                 ruleBoard.standardMoveDev(Integer.parseInt(save.getSavedBoard()[j][i]), j, i);
             }
-            System.out.println();
+            // System.out.println();
         }
         ruleBoard.printgame();
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 circleBoard.get(i).get(j).setMuligColor(Integer.parseInt(save.getSavedBoard()[i][j]));
-                Brik_v2.setColorAtTurn(Integer.parseInt(save.getSavedBoard()[i][j]));
+                // Brik_v2.setColorAtTurn(Integer.parseInt(save.getSavedBoard()[i][j]));
             }
         }
         legalMovesMap = ruleBoard.legalMove(save.getColor());
+        Brik_v2.setColorAtTurn(save.getColor());
+        color = save.getColor();
+        gm.setTurText(color);
+        changeColor();
+        addPosCir();
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
 
-
-        // ruleBoard.skipStart();
-        // for (int i = 0; i <= 7; i++) {
-        //      circleBoardRække = new ArrayList<Brik_v2>(size);
-
-        //      for (int j = 0; j <= 7; j++) {
-        //         Point p = new Point(i, j);
-
-        //         System.out.print("plads: " + j + "" + i + "farve: " + save.getSavedBoard()[j][i] + " | ");
-
-        //         Brik_v2 brik = new Brik_v2(ruleBoard, gm, p, save.getSavedBoard()[i][j], save.getColor());
-        //         circleBoardRække.add(brik);
-        //      }
-        //      System.out.println();
-        //  }
     }
 
     /**
@@ -227,9 +227,61 @@ public class GameDriver_v2 extends Application {
             // Laver en brik for alle steder det er muligt at ligge en ud fra hashmappet
             for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
                 circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(3);
+                addFlipCircles(entry.getKey().x, entry.getKey().y, entry.getValue());
             }
             // Ændre farve på tur teksten
             gm.setTurText(color);
         }
+    }
+
+    /**
+     * Tilføjer de cirkler der bliver vendt når der bliver trykket på en brik
+     * 
+     * @param x
+     * @param y
+     * @param pList
+     */
+    public void addFlipCircles(int x, int y, List<Point> pList) {
+        circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(5);
+                }
+
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                }
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < pList.size(); i++) {
+                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                }
+            }
+        });
+
+    }
+
+    public void delFlipCircles(int x, int y) {
+        circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+        circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+
 import java.awt.Point;
 
 public class Brik_v2 {
@@ -28,26 +29,7 @@ public class Brik_v2 {
         circles.add(circle);
         circle.setFill(null);
         gm.getRoot().getChildren().add(circle);
-    }
 
-    public Brik_v2(Regler r, GameBoard gm, Point p, String c, int turn) {
-        this.r = r;
-        circle = new Circle();
-        circle.setCenterX(p.x * 100 + 50);
-        circle.setCenterY(p.y * 100 + 50);
-        circle.setRadius(40);
-        circles.add(circle);
-        if(c.equals("0")){
-            circle.setFill(null);
-            System.out.println("gennemsigtig");
-        } if(c.equals("1")){
-            System.out.println("hvid");
-            circle.setFill(Color.WHITE);
-        } if(c.equals("2")){
-            System.out.println("sort");
-            circle.setFill(Color.BLACK);
-        }
-        gm.getRoot().getChildren().add(circle);
     }
 
     /**
@@ -57,17 +39,32 @@ public class Brik_v2 {
      */
     public void setMuligColor(int farve) {
         if (farve == 1) {
+            // Hvid brik
             circle.setFill(Color.rgb(255, 255, 255));
         } else if (farve == 2) {
+            // Sort brik
             circle.setFill(Color.rgb(0, 0, 0));
         } else if (farve == 3) {
             // Flipfarve
+            circle.setFill(Color.GREEN);
             circle.setStroke(Color.BLUE);
             circle.setStrokeWidth(2);
         } else if (farve == 4) {
+            // Fjern flipfarve
+            circle.setFill(null);
+            circle.setStroke(null);
+            circle.setStrokeWidth(1);
+        } else if (farve == 5) {
+
+            // De brikker der bliver vendt
+            circle.setStrokeWidth(3);
+            setColorStroke();
+        } else if (farve == 6) {
+            // Ændre de brikker der bliver vendt tilbage
             circle.setStroke(null);
             circle.setStrokeWidth(1);
         }
+
     }
 
     /**
@@ -106,8 +103,16 @@ public class Brik_v2 {
         }
     }
 
-    public int getColorAtTurn(){
-        return color;
+    public void setColorStroke() {
+        if (color == 1) {
+            circle.setStroke(Color.rgb(255, 255, 255));
+        } else if (color == 2) {
+            circle.setStroke(Color.rgb(0, 0, 0));
+        }
+    }
+
+    public Circle getCircle() {
+        return circle;
     }
 
     public static void setColorAtTurn(int loadedColor){
