@@ -179,32 +179,39 @@ public class GameDriver_v2 extends Application {
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
+    /**
+     * Gemmer brættet, når Save-knappen er trykket.
+     */
     private void saveGame() {
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
         save.writeToFile();
     }
 
+    /**
+     * Loader brættet når load-knapper er trykket.
+     * Bruger restart metode til at clear board, og sætter så brikkerne hentet fra jsonfil.
+     */
     private void loadGame() {
         restartGame();
 
+        //Passere gameboardet som 2D array og den daværendes tur som argumenter, til SaveNContinue.
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
 
+        //Bruger et forloop til at se gennem boardet og ændre farven på brikkerne
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
-                // System.out.print("plads: " + j + "" + i + "farve: " +
-                // save.getSavedBoard()[j][i] + " | ");
                 ruleBoard.standardMoveDev(Integer.parseInt(save.getSavedBoard()[j][i]), j, i);
             }
-            // System.out.println();
         }
-        ruleBoard.printgame();
 
+        //
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 circleBoard.get(i).get(j).setMuligColor(Integer.parseInt(save.getSavedBoard()[i][j]));
-                // Brik_v2.setColorAtTurn(Integer.parseInt(save.getSavedBoard()[i][j]));
             }
         }
+
+        //Funktioner til at håndtere klik efter load.
         legalMovesMap = ruleBoard.legalMove(save.getColor());
         Brik_v2.setColorAtTurn(save.getColor());
         color = save.getColor();
