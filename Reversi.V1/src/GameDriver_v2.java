@@ -6,7 +6,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.awt.Point;
-import java.text.RuleBasedCollator;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
