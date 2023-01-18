@@ -13,6 +13,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Options {
+
+    // Iniciater variabler
     public Stage stage;
     Group root;
     private Scene scene;
@@ -31,7 +33,7 @@ public class Options {
     ToggleGroup groupTema;
     Label saveConfirm;
 
-
+    //implements getters for import the values to the main game driver. to adjust the settings set for the game.
     public static int getSize() {
         return size;
     }
@@ -58,11 +60,14 @@ public class Options {
 
 
 
+
     public void OptionsMenu(Stage stage){
         this.stage = stage;
         buildOptions();
     }
+    
 
+    //builds the options menu window and all the visuals inside. 
     private void buildOptions()  {
         root = new Group();
         scene = new Scene(root,800,500);
@@ -72,27 +77,26 @@ public class Options {
         //Select Size of the board.
         Label labelSize = new Label("Select your size...");
         lSize = new Label(" ");
-        
         lSize.setTextFill(Color.BLACK);
 
+        //creating a slider for selecting the size
         Slider sliderSize = new Slider();
 
+        //set min and max values with a default value. 
         sliderSize.setMin(4);
         sliderSize.setMax(16);
         sliderSize.setValue(8);
         size = 8;
         lSize.setText("8");
 
-        //sliderSize.setShowTickLabels(true);
-        //sliderSize.setShowTickMarks(true);
-
-
-        sliderSize.setBlockIncrement(2);
+        //Create a visual on the slider so it's easier to see what value you are selecting.
+        sliderSize.setShowTickLabels(true);
+        sliderSize.setShowTickMarks(true);
         sliderSize.setMajorTickUnit(2);
         sliderSize.setMinorTickCount(2);
-        sliderSize.setSnapToTicks(true);
 
 
+        //creating a listener on the slider to create a label to show the value.
         sliderSize.valueProperty().addListener(
             new ChangeListener<Number>() {
                 
@@ -103,6 +107,8 @@ public class Options {
             }
         );
 
+
+        //adds the slider to the group so we can show them. and setting coordinates. 
         root.getChildren().addAll(labelSize, sliderSize, lSize);
         labelSize.setLayoutX(50);
         labelSize.setLayoutY(30);
@@ -121,12 +127,14 @@ public class Options {
         RadioButton Tema3 = new RadioButton();
         Tema3.setText("Light Blue/Pink"); // #afe31c
 
+        //creating a Togglegroup so only one of these can be selected at a time
         groupTema = new ToggleGroup();
         Tema1.setToggleGroup(groupTema);
         Tema2.setToggleGroup(groupTema);
         Tema3.setToggleGroup(groupTema);
 
 
+        //setting up the select color with radio buttons where it's going to be displayed on the screen.
         Label selectColorTema = new Label("Select color of your Pieces");
         root.getChildren().addAll(Tema1,Tema2,Tema3, selectColorTema);
         selectColorTema.setLayoutX(50);
@@ -141,15 +149,15 @@ public class Options {
         
 
         
-        //Checkboxes
+        //Checkboxes with descriptions. 
 
         singleplayer = new CheckBox("Singleplayer / play against the computer");
         automaticallyPiece = new CheckBox("turn pieces automatically");
         hoverPiece = new CheckBox("see tuned pieces by hovering");
         showtimeCheck = new CheckBox("show the time used for each player");
         
+        //adding the checkboxes to the group and adding coordinates to the group. 
         root.getChildren().addAll(singleplayer, automaticallyPiece, hoverPiece, showtimeCheck);
-
         singleplayer.setLayoutX(400);
         singleplayer.setLayoutY(50);
         automaticallyPiece.setLayoutX(400);
@@ -160,6 +168,7 @@ public class Options {
         showtimeCheck.setLayoutY(170);
 
 
+        //creating a label to give a confirmation message on when the settings are saved. 
         saveConfirm = new Label("");
         root.getChildren().add(saveConfirm);
         saveConfirm.setLayoutX(400);
@@ -179,21 +188,24 @@ public class Options {
         setButton(back, 600, 400, 150, 50, 30, 	"0,0,0", "back");
 
 
-
+        //set action on the back button to call the method back();
         back.setOnAction(event -> {
             back();
         });
 
+        //set action on the save button to call the method save();
         Save.setOnAction(event -> {
             save();
         });
 
     
+        //sets the title and setting the scene. 
         stage.setTitle("Reversi Options");
         stage.setScene(scene);
     }
 
 
+    //creating the save method to check all the variables and puts them into other variables that can be used from other classes.
     private void save() {
         size = Integer.parseInt(lSize.getText());
         selectedTema = (RadioButton) groupTema.getSelectedToggle();
@@ -205,11 +217,13 @@ public class Options {
         saveConfirm.setText("Options are saved");
     }
 
+    //creating the back method to start the menu again and shows it on the screen. 
     private void back(){
         ReversiMenu rm = new ReversiMenu(stage);
         rm.show();
     }
 
+    // method to create a button, with all the variables to setup a button. 
     public void setButton(Button but, int x, int y, int xSize, int ySize, int fSize, String rgbString, String text) {
         root.getChildren().add(but);
         but.setPrefSize(xSize,ySize);
