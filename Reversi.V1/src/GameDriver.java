@@ -49,8 +49,14 @@ public class GameDriver extends Application {
             Point q = new Point((int) event.getX(), (int) event.getY());
 
             // Tjekker om brugeren trykker inde på spillebrættet
+            
             if (gm.isOk(p)) {
 
+                int t = 0;
+                    while(t <= 1){
+                        if(color == 1){
+                            p = ruleBoard.oppMove();
+                        }
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
                 if (ruleBoard.startMoves(p.x, p.y)) {
@@ -68,6 +74,7 @@ public class GameDriver extends Application {
 
                     // Tjekker for legalmoves og sender et hashmap af legalMove tilbage ud fra en
                     // farve
+                    
                     legalMovesMap = ruleBoard.legalMove(color);
                     if (ruleBoard.getStartPlacement() == 4) {
 
@@ -108,7 +115,8 @@ public class GameDriver extends Application {
                     // Da den allerede har ændret farve til den næste brik.
                     addPosCir();
                 }
-
+                t++;
+            }
                 while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
                     if (ruleBoard.start() == false && (pass == 2)) {
                         // Spillet er færdig
@@ -124,10 +132,14 @@ public class GameDriver extends Application {
                     Brik brik = new Brik(ruleBoard);
                     brik.setColorInt();
                 }
+                
+            
             } else if (gm.knapIsPressed(q)) {
                 restartGame();
             }
+            
         }
+        
     }
 
     /**

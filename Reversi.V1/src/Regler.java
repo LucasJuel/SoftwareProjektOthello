@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.awt.Point;
 
 public class Regler {
@@ -229,4 +230,41 @@ public class Regler {
     public int getStartPlacement() {
         return startplacements;
     }
+
+    /**
+     * Finder det træk hvor der skal flippes flest af modstanderens brikker.
+     * 
+     * @return det valgte træk i form af et punkt opbjekt.
+     */
+    public Point oppMove() {
+        Entry<Point, List<Point>> possibleMove = null;
+
+        for (Entry<Point, List<Point>> mostFlips : legalMap.entrySet()) {
+            if (possibleMove == null || mostFlips.getValue().size() > possibleMove.getValue().size()) {
+                possibleMove = mostFlips;
+            }
+        }
+
+        Point move = possibleMove.getKey();
+        return move;
+    }
+
+    /**
+     * Finder et tomtfelt i de 4 inderste felter
+     * 
+     * @return det tomme felt på punkt form
+     */
+    public Point oppStart() {
+        for (int i = 3; i <= 4; i++) {
+            for (int j = 3; j <= 4; j++) {
+                if (braet[i][j] == 0) {
+                    Point move = new Point(i, j);
+                    return move;
+                }
+            }
+        }
+        Point no = new Point(0, 0);
+        return no;
+    }
+
 }

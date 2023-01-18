@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.awt.Point;
+import java.text.RuleBasedCollator;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +26,13 @@ public class GameDriver_v2 extends Application {
     ArrayList<Circle> posCircles = new ArrayList<Circle>();
     ArrayList<ArrayList<Brik_v2>> circleBoard;
     ArrayList<Brik_v2> circleBoardRække;
+    Brik_v2 brikobj;
     private int pass = 0;
     private int winner = 0;
     private int color = 2;
+    Point q;
+    SaveNContinue save = new SaveNContinue(null, color);
+
 
     @Override
     public void start(Stage primStage) throws Exception {
@@ -48,7 +53,7 @@ public class GameDriver_v2 extends Application {
             // Laver to point for hvor på brættet der trykkes eller hvor på skærmen
 
             Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
-            Point q = new Point((int) event.getX(), (int) event.getY());
+            q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
 
             if (gm.isOk(p)) {
@@ -111,8 +116,12 @@ public class GameDriver_v2 extends Application {
                     // Kalder en static metode
                     Brik_v2.setPassColor();
                 }
-            } else if (gm.knapIsPressed(q)) {
+            } else if (gm.genstartIsPressed(q)) {
                 restartGame();
+            } else if (gm.saveIsPressed(q)){
+                saveGame();
+            } else if (gm.loadIsPressed(q)){
+                loadGame();                
             }
         }
     }
@@ -157,6 +166,35 @@ public class GameDriver_v2 extends Application {
         gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
     }
 
+    private void saveGame(){
+        System.out.println("hej");
+        brikobj = new Brik_v2(ruleBoard, gm, q);
+        save = new SaveNContinue(ruleBoard.getGameboard(), brikobj.getColorAtTurn());
+        save.writeToFile();
+    }
+
+    private void loadGame(){
+        gm = new GameBoard(size);
+        ruleBoard = new Regler(size - 1);
+        gm.draw(primStage).show();
+        gm.setTurText(2);
+        save = new SaveNContinue(ruleBoard.getGameboard(), color);
+        circleBoard = new ArrayList<ArrayList<Brik_v2>>(size);
+        ruleBoard.skipStart();
+
+        for (int i = 0; i <= 7; i++) {
+            circleBoardRække = new ArrayList<Brik_v2>(size);
+            for (int j = 0; j <= 7; j++) {
+                Point p = new Point(i, j);
+                System.out.print("plads: " + j + "" + i + "farve: " + save.getSavedBoard()[j][i] + " | ");
+                Brik_v2 brik = new Brik_v2(ruleBoard, gm, p, save.getSavedBoard()[i][j]);
+                circleBoardRække.add(brik);
+            }
+            System.out.println();
+        }
+        gm.getGMScene().addEventFilter(MouseEvent.MOUSE_CLICKED, this::handleClick);
+    }
+
     /**
      * Tilføjer cirkler hvor der er mulighed for at ligge en cirkel
      */
@@ -166,7 +204,6 @@ public class GameDriver_v2 extends Application {
         changeColor();
         legalMovesMap = ruleBoard.legalMove(color);
         if (ruleBoard.getStartPlacement() >= 4) {
-
             // Laver en brik for alle steder det er muligt at ligge en ud fra hashmappet
             for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
                 circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(3);
