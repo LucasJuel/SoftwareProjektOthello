@@ -2,6 +2,23 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "lib/**/*.jar",
+        "c:\\Users\\lucas\\Desktop\\jdk-19+fx-19\\lib\\javafx-swt.jar",
+        "c:\\Users\\lucas\\Desktop\\jdk-19+fx-19\\lib\\jrt-fs.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.base.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.controls.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.fxml.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.graphics.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.media.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.swing.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx.web.jar",
+        "c:\\Users\\lucas\\Desktop\\javafx-sdk-19.0.2\\lib\\javafx-swt.jar"
+    ],
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-19",
+            "path": "C:\\Users\\lucas\\Desktop\\jdk-19+fx-19",
+            "default": true
+        }
     ]
 }

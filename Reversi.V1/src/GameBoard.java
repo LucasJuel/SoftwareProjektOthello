@@ -94,7 +94,9 @@ public class GameBoard {
     /**
      * Sætter den passende tekst når spillet er afgjort.
      * 
-     * @param farve
+     * @param farve 1 = hvid, 2 = sort, 3 = hvid pass, 4 = sort pass, 5 = resetter
+     *              text, andet = uafgjort
+     * 
      */
     public void setVinderText(int farve) {
         turText.setText(null);
@@ -104,10 +106,18 @@ public class GameBoard {
         } else if (farve == 2) {
             vinderText.setFill(Color.BLACK);
             vinderText.setText("SORT\nVINDER!!");
+        } else if (farve == 3) {
+            vinderText.setFill(Color.WHITE);
+            vinderText.setText("Hvid \nmelder \npass");
+        } else if (farve == 4) {
+            vinderText.setFill(Color.BLACK);
+            vinderText.setText("Sort \nmelder \npass");
+        } else if (farve == 5) {
+            vinderText.setFill(null);
+            vinderText.setText("");
         } else {
             vinderText.setFill(Color.RED);
             vinderText.setText("UAFGJORT");
-
         }
     }
 
@@ -193,4 +203,5 @@ public class GameBoard {
             return false;
         }
     }
+
 }

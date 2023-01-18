@@ -2,6 +2,11 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 
+
+
+/**
+ * Dette er filen vi brugte til at teste vores regler.
+ */
 public class ReglerDriver {
     public static void main(String[] args) {
         Regler hej = new Regler(7);

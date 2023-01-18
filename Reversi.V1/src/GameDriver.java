@@ -73,8 +73,6 @@ public class GameDriver extends Application {
 
                         // Laver en brik for alle steder det er muligt at ligge en ud fra hashmappet
                         brik.setColorRes();
-                        Brik brikPos2 = new Brik(ruleBoard);
-                        brikPos2.possibleCircle(legalMovesMap, gm);
 
                         // Ændre farve på tur teksten
                         gm.setTurText(color);
@@ -87,9 +85,7 @@ public class GameDriver extends Application {
 
                     // Sætter antal pass til 0 og sletter alle mulige træk man kan lave
                     pass = 0;
-                    Brik brikPos = new Brik(ruleBoard);
-                    brikPos.deletePossibleCircle(gm);
-
+                    gm.setVinderText(5);
                     // Opdatere Regler med det træk der bliver lavet
                     ruleBoard.standardMove(color, p.x, p.y);
 
@@ -120,6 +116,11 @@ public class GameDriver extends Application {
                     // Betyder at der skal meldes pas
                     System.out.println("pass");
                     pass++;
+                    if (color == 1) {
+                        gm.setVinderText(3);
+                    } else if (color == 2) {
+                        gm.setVinderText(4);
+                    }
                     addPosCir();
                     Brik brik = new Brik(ruleBoard);
                     brik.setColorInt();
@@ -159,8 +160,6 @@ public class GameDriver extends Application {
     private void addPosCir() {
         changeColor();
         legalMovesMap = ruleBoard.legalMove(color);
-        Brik brikPos = new Brik(ruleBoard);
-        brikPos.possibleCircle(legalMovesMap, gm);
         gm.setTurText(color);
     }
 }
