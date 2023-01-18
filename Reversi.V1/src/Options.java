@@ -83,17 +83,15 @@ public class Options {
         Slider sliderSize = new Slider();
 
         //set min and max values with a default value. 
-        sliderSize.setMin(4);
-        sliderSize.setMax(16);
-        sliderSize.setValue(8);
+        sliderSize.setMin(2);
+        sliderSize.setMax(8);
+        sliderSize.setValue(4);
         size = 8;
         lSize.setText("8");
 
         //Create a visual on the slider so it's easier to see what value you are selecting.
-        sliderSize.setShowTickLabels(true);
         sliderSize.setShowTickMarks(true);
-        sliderSize.setMajorTickUnit(2);
-        sliderSize.setMinorTickCount(2);
+
 
 
         //creating a listener on the slider to create a label to show the value.
@@ -102,7 +100,7 @@ public class Options {
                 
                 public void changed(ObservableValue <? extends Number > observable, Number oldValue, Number newValue)
                 {
-                    lSize.setText(""+newValue.intValue());
+                    lSize.setText(""+newValue.intValue()*2);
                 }
             }
         );
@@ -114,8 +112,8 @@ public class Options {
         labelSize.setLayoutY(30);
         sliderSize.setLayoutX(50);
         sliderSize.setLayoutY(50);
-        lSize.setLayoutX(50);
-        lSize.setLayoutY(80);
+        lSize.setLayoutX(200);
+        lSize.setLayoutY(50);
 
         
 
@@ -207,7 +205,7 @@ public class Options {
 
     //creating the save method to check all the variables and puts them into other variables that can be used from other classes.
     private void save() {
-        size = Integer.parseInt(lSize.getText());
+        size = Integer.parseInt(lSize.getText())/2;
         selectedTema = (RadioButton) groupTema.getSelectedToggle();
         single = singleplayer.isSelected();
         automatically = automaticallyPiece.isSelected();
