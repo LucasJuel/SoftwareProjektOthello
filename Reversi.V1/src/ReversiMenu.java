@@ -3,7 +3,6 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 
@@ -13,13 +12,6 @@ public class ReversiMenu {
     public Stage stage;
     VBox root;
     private Scene scene;
-    static int size = 8;
-
-    public static int getSize() {
-        return size;
-    }
-
-    Label lbsize;
      
     public ReversiMenu(Stage stage){
         this.stage = stage;
@@ -33,28 +25,26 @@ public class ReversiMenu {
         root.setStyle("-fx-background-color: green;");
 
         Button start = new Button("Start");
-        lbsize = new Label("Size");
-        Button toggleSize = new Button("Toggle Size");
+        Button options = new Button("Options");
         Button exit = new Button("Exit");
 
         start.setMinWidth(200);
         
-        toggleSize.setMinWidth(200);
+
 
         exit.setMinWidth(200);
 
-        lbsize.setText("Medium, 8");
+
 
         start.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 30px; -fx-cursor: hand");
-        toggleSize.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 30px; -fx-cursor: hand");
+        options.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 30px; -fx-cursor: hand");     
         exit.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 30px; -fx-cursor: hand");
-        lbsize.setStyle("-fx-font-size: 30px; -fx-text-fill: white;");
 
 
         start.setDefaultButton(true);
         exit.setCancelButton(true);
 
-        root.getChildren().addAll(start,lbsize, toggleSize, exit);
+        root.getChildren().addAll(start, options, exit);
         root.setAlignment(Pos.CENTER);
 
         root.setSpacing(60);
@@ -68,8 +58,12 @@ public class ReversiMenu {
             }
         });
 
-        toggleSize.setOnAction(event -> {
-            toggleSize();
+        options.setOnAction(event -> {
+            try {
+                options(this.stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         exit.setOnAction(event -> {
@@ -87,18 +81,11 @@ public class ReversiMenu {
         gd.start(stage);
     }
 
-    private void toggleSize(){
-        if(size == 8){
-            size = 16;
-            lbsize.setText("Large, 16");
-        }else if(size == 16){
-            size = 4;
-            lbsize.setText("Small, 4");
-        }else if(size == 4){
-            size = 8;
-            lbsize.setText("Medium, 8");
-        }
+    private void options(Stage stage){
+        Options options = new Options();
+        options.OptionsMenu(stage);
     }
+
 
     private void exit(){
         Platform.exit();
