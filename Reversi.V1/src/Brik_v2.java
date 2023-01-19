@@ -81,10 +81,10 @@ public class Brik_v2 {
             }
         } else {
             if (color == 1) {
-                circle.setFill(Color.rgb(255, 255, 255));
+                circle.setFill(Options.getPlayer1Color());
                 color = 2;
             } else if (color == 2) {
-                circle.setFill(Color.rgb(0, 0, 0));
+                circle.setFill(Options.getPlayer2Color());
                 color = 1;
             }
         }
@@ -104,9 +104,9 @@ public class Brik_v2 {
 
     public void setColorStroke() {
         if (color == 1) {
-            circle.setStroke(Color.rgb(255, 255, 255));
+            circle.setStroke(Options.getPlayer1Color());
         } else if (color == 2) {
-            circle.setStroke(Color.rgb(0, 0, 0));
+            circle.setStroke(Options.getPlayer2Color());
         }
     }
 

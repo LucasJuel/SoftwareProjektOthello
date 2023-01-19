@@ -90,10 +90,10 @@ public class GameBoard {
     public void setTurText(int farve) {
         if (farve == 1) {
             turText.setFill(Options.getPlayer1Color());
-            turText.setText("Hvid");
+            turText.setText(Options.getPlayer1String());
         } else if (farve == 2) {
             turText.setFill(Options.getPlayer2Color());
-            turText.setText("Sort");
+            turText.setText(Options.getPlayer2String());
         } else if (farve == 3) {
             turText.setFill(Options.getPlayer1Color());
             turText.setText("Computer");
@@ -112,16 +112,16 @@ public class GameBoard {
         
         if (farve == 1) {
             vinderText.setFill(Options.getPlayer1Color());
-            vinderText.setText("HVID\nVINDER!!");
+            vinderText.setText(""+Options.getPlayer1String()+"\nVINDER!!");
         } else if (farve == 2) {
             vinderText.setFill(Options.getPlayer2Color());
-            vinderText.setText("SORT\nVINDER!!");
+            vinderText.setText(""+Options.getPlayer2String()+"\nVINDER!!");
         } else if (farve == 3) {
             vinderText.setFill(Options.getPlayer1Color());
-            vinderText.setText("Hvid \nmelder \npass");
+            vinderText.setText(""+Options.getPlayer1String()+" \nmelder \npass");
         } else if (farve == 4) {
             vinderText.setFill(Options.getPlayer2Color());
-            vinderText.setText("Sort \nmelder \npass");
+            vinderText.setText(""+Options.getPlayer2String()+" \nmelder \npass");
         } else if (farve == 5) {
             vinderText.setFill(null);
             vinderText.setText("");
