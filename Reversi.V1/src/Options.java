@@ -89,7 +89,6 @@ public class Options {
         sliderSize.setMin(2);
         sliderSize.setMax(8);
         sliderSize.setValue(4);
-        size = 4;
         lSize.setText("8");
 
         //Create a visual on the slider so it's easier to see what value you are selecting.
