@@ -124,9 +124,9 @@ public class Options {
         Tema1 = new RadioButton();
         Tema1.setText("Black/white");
         Tema2 = new RadioButton();
-        Tema2.setText("Green/Blue"); //Canva.com Triadic color Combination #df2120
+        Tema2.setText("Green/Blue"); //Canva.com Triadic color Combination #f3130c
         Tema3 = new RadioButton();
-        Tema3.setText("Light Blue/Pink"); // #afe31c
+        Tema3.setText("Light Blue/Pink"); // #fef601
 
         //creating a Togglegroup so only one of these can be selected at a time
         groupTema = new ToggleGroup();
