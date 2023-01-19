@@ -58,7 +58,7 @@ public class GameBoard {
         primStage.setScene(scene);
         primStage.setResizable(false);
         // Gør boardet grønt, og tilføjer et icon til vinduet.
-        scene.setFill(Color.GREEN);
+        scene.setFill(Options.getBaggrundsColor());
         primStage.getIcons().add(new Image("file:./img/IconReversi.png"));
 
         // Et for loop til at sætte stregener på boardet.
@@ -89,11 +89,14 @@ public class GameBoard {
      */
     public void setTurText(int farve) {
         if (farve == 1) {
-            turText.setFill(Color.WHITE);
+            turText.setFill(Options.getPlayer1Color());
             turText.setText("Hvid");
-        } else {
-            turText.setFill(Color.BLACK);
+        } else if (farve == 2) {
+            turText.setFill(Options.getPlayer2Color());
             turText.setText("Sort");
+        } else if (farve == 3) {
+            turText.setFill(Options.getPlayer1Color());
+            turText.setText("Computer");
         }
     }
 
@@ -106,26 +109,35 @@ public class GameBoard {
      */
     public void setVinderText(int farve) {
         turText.setText(null);
+        
         if (farve == 1) {
-            vinderText.setFill(Color.WHITE);
+            vinderText.setFill(Options.getPlayer1Color());
             vinderText.setText("HVID\nVINDER!!");
         } else if (farve == 2) {
-            vinderText.setFill(Color.BLACK);
+            vinderText.setFill(Options.getPlayer2Color());
             vinderText.setText("SORT\nVINDER!!");
         } else if (farve == 3) {
-            vinderText.setFill(Color.WHITE);
+            vinderText.setFill(Options.getPlayer1Color());
             vinderText.setText("Hvid \nmelder \npass");
         } else if (farve == 4) {
-            vinderText.setFill(Color.BLACK);
+            vinderText.setFill(Options.getPlayer2Color());
             vinderText.setText("Sort \nmelder \npass");
         } else if (farve == 5) {
             vinderText.setFill(null);
             vinderText.setText("");
+        } else if (farve == 6) {
+            vinderText.setFill(Options.getPlayer1Color());
+            vinderText.setText("Computer \nVINDER!!");
+        } else if (farve == 7) {
+            vinderText.setFill(Options.getPlayer1Color());
+            vinderText.setText("Computer \nmelder \npass");
         } else {
             vinderText.setFill(Color.RED);
             vinderText.setText("UAFGJORT");
         }
     }
+
+    
 
     /**
      * Sætter en tekst baseret på givne parametre.

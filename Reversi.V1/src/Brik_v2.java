@@ -1,5 +1,4 @@
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 
@@ -40,14 +39,14 @@ public class Brik_v2 {
     public void setMuligColor(int farve) {
         if (farve == 1) {
             // Hvid brik
-            circle.setFill(Color.rgb(255, 255, 255));
+            circle.setFill(Options.getPlayer1Color());
         } else if (farve == 2) {
             // Sort brik
-            circle.setFill(Color.rgb(0, 0, 0));
+            circle.setFill(Options.getPlayer2Color());
         } else if (farve == 3) {
             // Flipfarve
-            circle.setFill(Color.GREEN);
-            circle.setStroke(Color.BLUE);
+            circle.setFill(Options.getBaggrundsColor());
+            circle.setStroke(Options.getFlipColor());
             circle.setStrokeWidth(2);
         } else if (farve == 4) {
             // Fjern flipfarve
@@ -74,10 +73,10 @@ public class Brik_v2 {
     public void setColor() {
         if (r.getStartPlacement() <= 4) {
             if (r.getStartPlacement() > 2) {
-                circle.setFill(Paint.valueOf("white"));
+                circle.setFill(Options.getPlayer1Color());
                 color = 2;
             } else {
-                circle.setFill(Paint.valueOf("black"));
+                circle.setFill(Options.getPlayer2Color());
                 color = 1;
             }
         } else {

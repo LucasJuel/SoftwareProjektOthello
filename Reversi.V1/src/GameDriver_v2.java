@@ -7,6 +7,8 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.awt.Point;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,12 @@ public class GameDriver_v2 extends Application {
     private boolean isLoaded = false;
     private boolean isDone = false;
     Point q;
+
+    // Modstander venter 3 sekunder
+    private int modstanderVent = 1000;
+    Timer modstanderUr = new Timer();
+    private boolean modstanderTur = false;
+
     SaveNContinue save = new SaveNContinue(null, color);
 
     @Override
@@ -57,7 +65,7 @@ public class GameDriver_v2 extends Application {
             q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
 
-            if (gm.isOk(p) && !isDone) {
+            if (gm.isOk(p) && !isDone && !modstanderTur) {
 
                 // ----- De første 4 moves -----
                 // Tjekker om der man har lagt brikken i midten og tilføjer den i Regler
@@ -73,6 +81,14 @@ public class GameDriver_v2 extends Application {
                         gm.setTurText(1);
                     }
                     addPosCir();
+
+                    // Gør at brugeren spiller mod en computer
+                    if (ruleBoard.getStartPlacement() == 2 && Options.makeModstander()) {
+                        modstanderTur = true;
+                        gm.setTurText(3);
+                        modstanderUr.schedule(new modstander(), modstanderVent);
+
+                    }
 
                     // Ser om der er blevet lagt de 4 første brikker og derefter ser om det er et
                     // legalmove.
@@ -102,6 +118,15 @@ public class GameDriver_v2 extends Application {
 
                     // Da den allerede har ændret farve til den næste brik.
                     addPosCir();
+
+                    // Gør at brugeren spiller mod en computer
+                    if (Options.makeModstander() && !legalMovesMap.isEmpty()) {
+                        modstanderTur = true;
+                        gm.setTurText(3);
+                        modstanderUr.schedule(new modstander(), modstanderVent);
+
+                    }
+
                 }
 
                 while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
@@ -109,16 +134,37 @@ public class GameDriver_v2 extends Application {
                         // Spillet er færdig
                         winner = ruleBoard.winner();
                         System.out.println("winner er " + winner);
+                        if (Options.makeModstander() && winner == 1) {
+                            winner = 3;
+                        }
                         gm.setVinderText(winner);
                         isDone = true;
                         break;
                     }
                     // Betyder at der skal meldes pas
                     System.out.println("pass");
-                    if (color == 1) {
-                        gm.setVinderText(3);
-                    } else if (color == 2) {
-                        gm.setVinderText(4);
+                    if (Options.makeModstander()) {
+                        if (color == 1) {
+                            gm.setVinderText(7);
+                        } else if (color == 2) {
+                            gm.setVinderText(4);
+                            pass++;
+                            addPosCir();
+                            // Kalder en static metode
+                            Brik_v2.setPassColor();
+
+                            modstanderTur = true;
+                            gm.setTurText(3);
+                            modstanderUr.schedule(new modstander(), modstanderVent);
+
+                            break;
+                        }
+                    } else {
+                        if (color == 1) {
+                            gm.setVinderText(3);
+                        } else if (color == 2) {
+                            gm.setVinderText(4);
+                        }
                     }
 
                     pass++;
@@ -158,6 +204,7 @@ public class GameDriver_v2 extends Application {
         isDone = false;
         color = 2;
         pass = 0;
+        modstanderTur = false;
 
         circleBoard = new ArrayList<ArrayList<Brik_v2>>(size);
 
@@ -188,15 +235,17 @@ public class GameDriver_v2 extends Application {
 
     /**
      * Loader brættet når load-knapper er trykket.
-     * Bruger restart metode til at clear board, og sætter så brikkerne hentet fra jsonfil.
+     * Bruger restart metode til at clear board, og sætter så brikkerne hentet fra
+     * jsonfil.
      */
     private void loadGame() {
         restartGame();
 
-        //Passere gameboardet som 2D array og den daværendes tur som argumenter, til SaveNContinue.
+        // Passere gameboardet som 2D array og den daværendes tur som argumenter, til
+        // SaveNContinue.
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
 
-        //Bruger et forloop til at se gennem boardet og ændre farven på brikkerne
+        // Bruger et forloop til at se gennem boardet og ændre farven på brikkerne
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 ruleBoard.standardMoveDev(Integer.parseInt(save.getSavedBoard()[j][i]), j, i);
@@ -210,7 +259,7 @@ public class GameDriver_v2 extends Application {
             }
         }
 
-        //Funktioner til at håndtere klik efter load.
+        // Funktioner til at håndtere klik efter load.
         legalMovesMap = ruleBoard.legalMove(save.getColor());
         Brik_v2.setColorAtTurn(save.getColor());
         color = save.getColor();
@@ -251,23 +300,27 @@ public class GameDriver_v2 extends Application {
         circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                for (int i = 0; i < pList.size(); i++) {
-                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(5);
+                if (!modstanderTur) {
+                    for (int i = 0; i < pList.size(); i++) {
+                        circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(5);
+                    }
                 }
-
             }
         });
         circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+
                 for (int i = 0; i < pList.size(); i++) {
                     circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
                 }
+
             }
         });
         circleBoard.get(x).get(y).getCircle().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+
                 for (int i = 0; i < pList.size(); i++) {
                     circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
                 }
@@ -290,4 +343,52 @@ public class GameDriver_v2 extends Application {
             }
         });
     }
+
+    private class modstander extends TimerTask {
+
+        // Den overrider run() metoden fra TimerTask
+        @Override
+        public void run() {
+
+            if (ruleBoard.getStartPlacement() < 4 && modstanderTur) {
+                for (int i = 0; i < 2; i++) {
+                    gm.setTurText(3);
+
+                    Point m = new Point();
+                    m = ruleBoard.oppStart();
+                    circleBoard.get(m.x).get(m.y).setMuligColor(1);
+
+                    ruleBoard.startMoves(m.x, m.y);
+                    addPosCir();
+                }
+                Brik_v2.setPassColor();
+            } else if (!legalMovesMap.isEmpty() && modstanderTur) {
+                Point m = new Point();
+                m = ruleBoard.oppMove();
+                gm.setVinderText(5);
+                for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
+                    circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(4);
+                    delFlipCircles(entry.getKey().x, entry.getKey().y);
+                }
+
+                // Laver en brik hvor der er blevet trykket
+                circleBoard.get(m.x).get(m.y).setColor();
+
+                // Opdatere Regler med det træk der bliver lavet
+                ruleBoard.standardMove(color, m.x, m.y);
+
+                // Vender brikkerne der skal flippes, får Value listen fra den bestemte key fra
+                // hashmappet, og derefter ændre farven på brikken der er der
+                List<Point> brikVendes = legalMovesMap.get(m);
+                for (int i = 0; i < brikVendes.size(); i++) {
+                    circleBoard.get(brikVendes.get(i).x).get(brikVendes.get(i).y).setMuligColor(color);
+                }
+                addPosCir();
+
+            }
+            modstanderTur = false;
+
+        }
+    }
+
 }

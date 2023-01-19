@@ -24,7 +24,7 @@ public class ReversiMenu {
         root = new VBox();
         scene = new Scene(root,800,500);
         //sets the background color
-        root.setStyle("-fx-background-color: green;");
+        root.setStyle("-fx-background-color: #"+Options.getBaggrundString()+";");
 
         //creating 3 buttons
         Button start = new Button("Start");
