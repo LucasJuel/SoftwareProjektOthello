@@ -18,7 +18,7 @@ public class GameDriver_v2 extends Application {
         launch(args);
     }
 
-    private int size = 8;
+    private int size = Options.getSize();
     GameBoard gm = new GameBoard(size);
     Regler ruleBoard = new Regler(size - 1);
     Button genstartSpilKnap;
@@ -98,9 +98,13 @@ public class GameDriver_v2 extends Application {
                     // Sætter antal pass til 0 og sletter alle mulige træk man kan lave
                     pass = 0;
                     gm.setVinderText(5);
-                    for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
-                        circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(4);
-                        delFlipCircles(entry.getKey().x, entry.getKey().y);
+                    if (Options.showPossibleMoves()) {
+                        for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
+                            circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(4);
+                            if (Options.showFlipHover()) {
+                                delFlipCircles(entry.getKey().x, entry.getKey().y);
+                            }
+                        }
                     }
 
                     // Opdatere Regler med det træk der bliver lavet
@@ -118,22 +122,23 @@ public class GameDriver_v2 extends Application {
 
                     // Da den allerede har ændret farve til den næste brik.
                     addPosCir();
-
+                    checkForPass();
                     // Gør at brugeren spiller mod en computer
                     if (Options.makeModstander() && !legalMovesMap.isEmpty()) {
+                        System.out.println("Computer træk");
                         modstanderTur = true;
                         gm.setTurText(3);
                         modstanderUr.schedule(new modstander(), modstanderVent);
                     }
 
+                }
+                if (!modstanderTur) {
                     checkForPass();
-                
-
                 }
             } else if (gm.genstartIsPressed(q)) {
                 restartGame();
             } else if (gm.saveIsPressed(q)) {
-                if(!Options.makeModstander()){
+                if (!Options.makeModstander()) {
                     saveGame();
                 }
             } else if (gm.loadIsPressed(q)) {
@@ -232,8 +237,8 @@ public class GameDriver_v2 extends Application {
 
     }
 
-    //Kører menuen og genstarter spillet.
-    private void backGame(){
+    // Kører menuen og genstarter spillet.
+    private void backGame() {
         ReversiMenu reversiMenu = new ReversiMenu(primStage);
         reversiMenu.show();
     }
@@ -248,20 +253,26 @@ public class GameDriver_v2 extends Application {
         legalMovesMap = ruleBoard.legalMove(color);
         if (ruleBoard.getStartPlacement() >= 4) {
             // Laver en brik for alle steder det er muligt at ligge en ud fra hashmappet
-            for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
-                circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(3);
-                addFlipCircles(entry.getKey().x, entry.getKey().y, entry.getValue());
+            if (Options.makeModstander() && modstanderTur || !Options.makeModstander()) {
+                if (Options.showPossibleMoves()) {
+                    for (Map.Entry<Point, List<Point>> entry : legalMovesMap.entrySet()) {
+                        circleBoard.get(entry.getKey().x).get(entry.getKey().y).setMuligColor(3);
+                        if (Options.showFlipHover()) {
+                            addFlipCircles(entry.getKey().x, entry.getKey().y, entry.getValue());
+                        }
+                    }
+                }
             }
             // Ændre farve på tur teksten
             gm.setTurText(color);
         }
     }
 
-    public void checkForPass(){
+    public void checkForPass() {
         legalMovesMap = ruleBoard.legalMove(color);
-        System.out.println("Udenfor While " + legalMovesMap.size() );
+        System.out.println("udenfor while " + legalMovesMap.size());
         while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
-            System.out.println("inde i while");
+            System.out.println("indeni " + legalMovesMap.size());
             if (ruleBoard.start() == false && (pass >= 2)) {
                 // Spillet er færdig
                 winner = ruleBoard.winner();
@@ -294,7 +305,7 @@ public class GameDriver_v2 extends Application {
                     gm.setTurText(3);
                     modstanderUr.schedule(new modstander(), modstanderVent);
                 }
-            
+
             } else {
                 if (color == 1) {
                     System.out.println("spiller siger pas " + pass);
@@ -323,7 +334,8 @@ public class GameDriver_v2 extends Application {
         circleBoard.get(x).get(y).getCircle().setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (!modstanderTur) {
+                // if(!modstanderTur) {
+                if (!modstanderTur && !(pList.size() == 0)) {
                     for (int i = 0; i < pList.size(); i++) {
                         circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(5);
                     }
@@ -333,19 +345,20 @@ public class GameDriver_v2 extends Application {
         circleBoard.get(x).get(y).getCircle().setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
-                for (int i = 0; i < pList.size(); i++) {
-                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                if (!(pList.size() == 0)) {
+                    for (int i = 0; i < pList.size(); i++) {
+                        circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                    }
                 }
-
             }
         });
         circleBoard.get(x).get(y).getCircle().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
-                for (int i = 0; i < pList.size(); i++) {
-                    circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                if (!(pList.size() == 0)) {
+                    for (int i = 0; i < pList.size(); i++) {
+                        circleBoard.get(pList.get(i).x).get(pList.get(i).y).setMuligColor(6);
+                    }
                 }
             }
         });
@@ -386,7 +399,6 @@ public class GameDriver_v2 extends Application {
                 }
                 Brik_v2.setPassColor();
             } else if (!legalMovesMap.isEmpty() && modstanderTur) {
-                System.out.println("jeg er i en tur!");
                 checkForPass();
                 Point m = new Point();
                 m = ruleBoard.oppMove();
@@ -409,8 +421,7 @@ public class GameDriver_v2 extends Application {
                     circleBoard.get(brikVendes.get(i).x).get(brikVendes.get(i).y).setMuligColor(color);
                 }
                 addPosCir();
-            } else if(legalMovesMap.isEmpty()){
-                System.out.println("im here");
+            } else if (legalMovesMap.isEmpty()) {
                 checkForPass();
             }
             modstanderTur = false;

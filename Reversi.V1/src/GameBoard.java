@@ -11,6 +11,7 @@ import java.awt.Point;
 
 public class GameBoard {
 
+    private int sizePiece;
     private int size;
     private Group root;
     private Scene scene;
@@ -38,6 +39,7 @@ public class GameBoard {
         this.back = new Button();
         root = new Group();
         scene = new Scene(root);
+        sizePiece = (int) 800/size;
     }
 
     /**
@@ -48,7 +50,7 @@ public class GameBoard {
      */
     public Stage draw(Stage primStage) {
         // sætter en variable height fra antal brikker til antal pixels.
-        height = size * 100;
+        height = 800;
         primStage.setTitle("Reversi");
 
         // Sætter højde og bredde og gør plads til en menu til højre for spillet.(40 og
@@ -64,7 +66,7 @@ public class GameBoard {
         primStage.getIcons().add(new Image("file:img/IconReversi.png"));
 
         // Et for loop til at sætte stregener på boardet.
-        for (int i = 0; i < height + 100; i += 100) {
+        for (int i = 0; i < height + sizePiece; i += sizePiece) {
             // Horisontale streger.
             Line xGridline = new Line(i, 0, i, height);
             xGridline.setFill(Color.BLACK);

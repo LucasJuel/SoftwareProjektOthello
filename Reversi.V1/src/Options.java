@@ -21,35 +21,42 @@ public class Options {
     public Stage stage;
     Group root;
     private Scene scene;
-    static int size;
+    static int size= 4;
     Label lSize;
     Label Colorpieces;
-    static boolean single;
+    static boolean single = true;
     static boolean muligeTræk;
     static boolean pieceHover;
-    static boolean showTime;
     CheckBox singleplayer;
     CheckBox possibleMove;
     CheckBox hoverPiece;
-    CheckBox showtimeCheck;
     static RadioButton selectedTema;
     ToggleGroup groupTema;
     Label saveConfirm;
-    private static ArrayList<Color> player1 = new ArrayList<Color>(Arrays.asList(Color.WHITE,Color.rgb(142, 202, 230)));
-    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK,Color.rgb(251, 133, 0)));
-    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid","Blå"));
-    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort","Orange"));
-    private static ArrayList<Color> baggrundList = new ArrayList<Color>(Arrays.asList(Color.GREEN,Color.rgb(2, 48, 71)));
-    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000","023047"));
-    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE,Color.rgb(230, 57, 70)));
-    
+    Label labelSize;
+    Label selectColorTema;
+
+    RadioButton Tema1 = new RadioButton();
+    RadioButton Tema2 = new RadioButton();
+    RadioButton Tema3 = new RadioButton();
+    private static ArrayList<Color> player1 = new ArrayList<Color>(
+            Arrays.asList(Color.WHITE, Color.rgb(142, 202, 230)));
+    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(251, 133, 0)));
+    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid", "Blå"));
+    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort", "Orange"));
+    private static ArrayList<Color> baggrundList = new ArrayList<Color>(
+            Arrays.asList(Color.GREEN, Color.rgb(2, 48, 71)));
+    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000", "023047"));
+    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.rgb(230, 57, 70)));
+    private static ArrayList<Color> tekstFarveColor = new ArrayList<Color>(
+            Arrays.asList(Color.BLACK, Color.rgb(230, 57, 70)));
 
     private static int colorInt = 1;
 
     // implements getters for import the values to the main game driver. to adjust
     // the settings set for the game.
     public static int getSize() {
-        return size*2;
+        return 4 * 2;
     }
 
     public static boolean makeModstander() {
@@ -62,10 +69,6 @@ public class Options {
 
     public static boolean showFlipHover() {
         return pieceHover;
-    }
-
-    public static boolean isshowTime() {
-        return showTime;
     }
 
     public static Color getPlayer2Color() {
@@ -108,11 +111,12 @@ public class Options {
         root = new Group();
         scene = new Scene(root, 800, 500);
         scene.setFill(Options.getBaggrundsColor());
-
         // Select Size of the board.
-        Label labelSize = new Label("Select your size...");
+        labelSize = new Label("Select your size...");
+        labelSize.setTextFill(tekstFarveColor.get(colorInt));
+
         lSize = new Label(" ");
-        lSize.setTextFill(Color.BLACK);
+        lSize.setTextFill(tekstFarveColor.get(colorInt));
 
         // creating a slider for selecting the size
         Slider sliderSize = new Slider();
@@ -128,7 +132,7 @@ public class Options {
 
         // Create a visual on the slider so it's easier to see what value you are
         // selecting.
-        //sliderSize.setShowTickLabels(true);
+        // sliderSize.setShowTickLabels(true);
         // sliderSize.setShowTickMarks(true);
         sliderSize.setMajorTickUnit(2);
         sliderSize.setMinorTickCount(2);
@@ -141,7 +145,7 @@ public class Options {
 
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue,
                             Number newValue) {
-                        lSize.setText("" + newValue.intValue()*2);
+                        lSize.setText("" + newValue.intValue() * 2);
                     }
                 });
 
@@ -155,13 +159,14 @@ public class Options {
         lSize.setLayoutY(80);
 
         // Creating RadioButton for pieces color
-        RadioButton Tema1 = new RadioButton();
+
         Tema1.setText("Classic");
+        Tema1.setTextFill(tekstFarveColor.get(colorInt));
         Tema1.setSelected(true);
-        RadioButton Tema2 = new RadioButton();
         Tema2.setText("Sunset"); // Canva.com Triadic color Combination #df2120
-        RadioButton Tema3 = new RadioButton();
+        Tema2.setTextFill(tekstFarveColor.get(colorInt));
         Tema3.setText("Light Blue/Pink"); // #afe31c
+        Tema3.setTextFill(tekstFarveColor.get(colorInt));
 
         // creating a Togglegroup so only one of these can be selected at a time
         groupTema = new ToggleGroup();
@@ -171,7 +176,8 @@ public class Options {
 
         // setting up the select color with radio buttons where it's going to be
         // displayed on the screen.
-        Label selectColorTema = new Label("Select color of your Pieces");
+        selectColorTema = new Label("Select color of your Pieces");
+        selectColorTema.setTextFill(tekstFarveColor.get(colorInt));
         root.getChildren().addAll(Tema1, Tema2, Tema3, selectColorTema);
         selectColorTema.setLayoutX(50);
         selectColorTema.setLayoutY(200);
@@ -187,18 +193,36 @@ public class Options {
         singleplayer = new CheckBox("Singleplayer / play against the computer");
         possibleMove = new CheckBox("Show possible moves");
         hoverPiece = new CheckBox("See turned pieces by hovering");
-        showtimeCheck = new CheckBox("show the time used for each player");
+        singleplayer.setTextFill(tekstFarveColor.get(colorInt));
+        possibleMove.setTextFill(tekstFarveColor.get(colorInt));
+        hoverPiece.setTextFill(tekstFarveColor.get(colorInt));
+
+        if(possibleMove.isSelected()) {
+            hoverPiece.setDisable(false);
+        } else {
+            hoverPiece.setDisable(true);
+        }
+
+        possibleMove.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed (ObservableValue <? extends Boolean> arg0, Boolean gammBoolean, Boolean nyBoolean) {
+                if(nyBoolean) {
+                    hoverPiece.setDisable(false);
+                } else {
+                    hoverPiece.setDisable(true);
+                    hoverPiece.setSelected(false);
+                }
+            }
+        });
 
         // adding the checkboxes to the group and adding coordinates to the group.
-        root.getChildren().addAll(singleplayer, possibleMove, hoverPiece, showtimeCheck);
+        root.getChildren().addAll(singleplayer, possibleMove, hoverPiece);
         singleplayer.setLayoutX(400);
         singleplayer.setLayoutY(50);
         possibleMove.setLayoutX(400);
         possibleMove.setLayoutY(90);
         hoverPiece.setLayoutX(400);
         hoverPiece.setLayoutY(130);
-        showtimeCheck.setLayoutX(400);
-        showtimeCheck.setLayoutY(170);
 
         if (single) {
             singleplayer.setSelected(true);
@@ -218,19 +242,13 @@ public class Options {
             hoverPiece.setSelected(false);
         }
 
-        if (showTime) {
-            showtimeCheck.setSelected(true);
-        } else {
-            showtimeCheck.setSelected(false);
-        }
-
         if (colorInt == 0) {
             Tema1.setSelected(true);
         } else if (colorInt == 1) {
             Tema2.setSelected(true);
         } else if (colorInt == 2) {
             Tema3.setSelected(true);
-        } 
+        }
 
         // creating a label to give a confirmation message on when the settings are
         // saved.
@@ -239,23 +257,23 @@ public class Options {
         saveConfirm.setLayoutX(400);
         saveConfirm.setLayoutY(380);
 
-        if(single){
+        if (single) {
             singleplayer.setSelected(true);
-         }else{
-             singleplayer.setSelected(false);
-         }
- 
-         if(muligeTræk){
-             possibleMove.setSelected(true);
-          }else{
-             possibleMove.setSelected(false);
-          }
- 
-          if(pieceHover){
-             hoverPiece.setSelected(true);
-          }else{
-             hoverPiece.setSelected(false);
-          }
+        } else {
+            singleplayer.setSelected(false);
+        }
+
+        if (muligeTræk) {
+            possibleMove.setSelected(true);
+        } else {
+            possibleMove.setSelected(false);
+        }
+
+        if (pieceHover) {
+            hoverPiece.setSelected(true);
+        } else {
+            hoverPiece.setSelected(false);
+        }
 
         // Save button
 
@@ -291,9 +309,17 @@ public class Options {
         single = singleplayer.isSelected();
         muligeTræk = possibleMove.isSelected();
         pieceHover = hoverPiece.isSelected();
-        showTime = showtimeCheck.isSelected();
 
+        if (Tema1.isSelected()) {
+            colorInt = 0;
+        } else if (Tema2.isSelected()) {
+            colorInt = 1;
+        } else if (Tema3.isSelected()) {
+            colorInt = 2;
+        }
         saveConfirm.setText("Options are saved");
+        saveConfirm.setTextFill(tekstFarveColor.get(colorInt));
+        updateColor();
     }
 
     // creating the back method to start the menu again and shows it on the screen.
@@ -315,5 +341,18 @@ public class Options {
 
     void show() {
         this.stage.show();
+    }
+
+    private void updateColor() {
+        labelSize.setTextFill(tekstFarveColor.get(colorInt));
+        lSize.setTextFill(tekstFarveColor.get(colorInt));
+        Tema1.setTextFill(tekstFarveColor.get(colorInt));
+        Tema2.setTextFill(tekstFarveColor.get(colorInt));
+        Tema3.setTextFill(tekstFarveColor.get(colorInt));
+        selectColorTema.setTextFill(tekstFarveColor.get(colorInt));
+        singleplayer.setTextFill(tekstFarveColor.get(colorInt));
+        possibleMove.setTextFill(tekstFarveColor.get(colorInt));
+        hoverPiece.setTextFill(tekstFarveColor.get(colorInt));
+        scene.setFill(baggrundList.get(colorInt));
     }
 }

@@ -273,8 +273,8 @@ public class Regler {
      * @return det tomme felt på punkt form
      */
     public Point oppStart() {
-        for (int i = 3; i <= 4; i++) {
-            for (int j = 3; j <= 4; j++) {
+        for (int i = (int)size/2; i <= (size/2)+1; i++) {
+            for (int j = (int)size/2; j <= (size/2)+1; j++) {
                 if (braet[i][j] == 0) {
                     Point move = new Point(i, j);
                     return move;
