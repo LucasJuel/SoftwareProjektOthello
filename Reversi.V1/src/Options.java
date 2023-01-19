@@ -18,17 +18,20 @@ public class Options {
     public Stage stage;
     Group root;
     private Scene scene;
-    static int size;
+    static int size = 8;
     Label lSize;
     Label Colorpieces;
-    static boolean single;
-    static boolean automatically;
-    static boolean pieceHover;
-    static boolean showTime;
+    static boolean single = false;
+    static boolean automatically = true;
+    static boolean pieceHover = true;
+    static boolean showTime = true;
     CheckBox singleplayer;
     CheckBox automaticallyPiece;
     CheckBox hoverPiece;
     CheckBox showtimeCheck;
+    RadioButton Tema1;
+    RadioButton Tema2;
+    RadioButton Tema3;
     static RadioButton selectedTema;
     ToggleGroup groupTema;
     Label saveConfirm;
@@ -118,11 +121,11 @@ public class Options {
         
 
         //Creating RadioButton for pieces color
-        RadioButton Tema1 = new RadioButton();
+        Tema1 = new RadioButton();
         Tema1.setText("Black/white");
-        RadioButton Tema2 = new RadioButton();
+        Tema2 = new RadioButton();
         Tema2.setText("Green/Blue"); //Canva.com Triadic color Combination #df2120
-        RadioButton Tema3 = new RadioButton();
+        Tema3 = new RadioButton();
         Tema3.setText("Light Blue/Pink"); // #afe31c
 
         //creating a Togglegroup so only one of these can be selected at a time
@@ -130,6 +133,7 @@ public class Options {
         Tema1.setToggleGroup(groupTema);
         Tema2.setToggleGroup(groupTema);
         Tema3.setToggleGroup(groupTema);
+        Tema1.setSelected(true);
 
 
         //setting up the select color with radio buttons where it's going to be displayed on the screen.
@@ -164,6 +168,30 @@ public class Options {
         hoverPiece.setLayoutY(130);
         showtimeCheck.setLayoutX(400);
         showtimeCheck.setLayoutY(170);
+
+        if(single = true){
+           singleplayer.setSelected(true);
+        }else{
+            singleplayer.setSelected(false);
+        }
+
+        if(automatically = true){
+            automaticallyPiece.setSelected(true);
+         }else{
+            automaticallyPiece.setSelected(false);
+         }
+
+         if(pieceHover = true){
+            hoverPiece.setSelected(true);
+         }else{
+            hoverPiece.setSelected(false);
+         }
+
+         if(showTime = true){
+            showtimeCheck.setSelected(true);
+         }else{
+            showtimeCheck.setSelected(false);
+         }
 
 
         //creating a label to give a confirmation message on when the settings are saved. 
