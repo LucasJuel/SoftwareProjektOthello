@@ -12,12 +12,13 @@ public class ReversiMenu {
     public Stage stage;
     VBox root;
     private Scene scene;
-     
 
     public ReversiMenu(Stage stage){
         this.stage = stage;
         buildMenu();
     }
+
+    
 
     //building menu
     private void buildMenu()  {

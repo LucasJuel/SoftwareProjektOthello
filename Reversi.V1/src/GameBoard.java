@@ -17,6 +17,7 @@ public class GameBoard {
     private Button genstart;
     private Button save;
     private Button load;
+    private Button back;
 
     int height;
     private Text turText;
@@ -34,6 +35,7 @@ public class GameBoard {
         this.genstart = new Button();
         this.save = new Button();
         this.load = new Button();
+        this.back = new Button();
         root = new Group();
         scene = new Scene(root);
     }
@@ -59,7 +61,7 @@ public class GameBoard {
         primStage.setResizable(false);
         // Gør boardet grønt, og tilføjer et icon til vinduet.
         scene.setFill(Options.getBaggrundsColor());
-        primStage.getIcons().add(new Image("file:./img/IconReversi.png"));
+        primStage.getIcons().add(new Image("file:img/IconReversi.png"));
 
         // Et for loop til at sætte stregener på boardet.
         for (int i = 0; i < height + 100; i += 100) {
@@ -78,6 +80,8 @@ public class GameBoard {
         setButton(genstart, 825, 600, 150, 75, 25, "66, 135, 245", "Spil igen");
         setButton(save, 825, 500, 150, 75, 25, "66, 135, 245", "Gem spillet");
         setButton(load, 825, 400, 150, 75, 25, "66, 135, 245", "load spillet");
+        setButton(back, 920, 10, 75, 25, 15, "66, 135, 245", "Tilbage");
+
         // Og så returnere vi vores stage.
         return primStage;
     }
@@ -234,6 +238,15 @@ public class GameBoard {
     public Boolean loadIsPressed(Point p) {
         if (load.getLayoutX() < p.x && p.x < load.getLayoutX() + 150 && load.getLayoutY() < p.y
                 && p.y < load.getLayoutY() + 75) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean backIsPressed(Point p) {
+        if (back.getLayoutX() < p.x && p.x < back.getLayoutX() + 150 && back.getLayoutY() < p.y
+                && p.y < back.getLayoutY() + 75) {
             return true;
         } else {
             return false;

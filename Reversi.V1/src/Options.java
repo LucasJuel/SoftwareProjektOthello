@@ -1,7 +1,4 @@
 import javafx.beans.value.ObservableValue;
-
-import java.util.ArrayList;
-
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -111,11 +108,13 @@ public class Options {
         Slider sliderSize = new Slider();
 
         // set min and max values with a default value.
-        sliderSize.setMin(4);
-        sliderSize.setMax(16);
-        sliderSize.setValue(8);
+        sliderSize.setMin(2);
+        sliderSize.setMax(8);
+        sliderSize.setValue(4);
         size = 8;
         lSize.setText("8");
+        sliderSize.setMinorTickCount(2);
+        sliderSize.setBlockIncrement(10);
 
         // Create a visual on the slider so it's easier to see what value you are
         // selecting.
@@ -130,7 +129,7 @@ public class Options {
 
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue,
                             Number newValue) {
-                        lSize.setText("" + newValue.intValue());
+                        lSize.setText("" + newValue.intValue()*2);
                     }
                 });
 
@@ -195,6 +194,24 @@ public class Options {
         root.getChildren().add(saveConfirm);
         saveConfirm.setLayoutX(400);
         saveConfirm.setLayoutY(380);
+
+        if(single){
+            singleplayer.setSelected(true);
+         }else{
+             singleplayer.setSelected(false);
+         }
+ 
+         if(muligeTræk){
+             possibleMove.setSelected(true);
+          }else{
+             possibleMove.setSelected(false);
+          }
+ 
+          if(pieceHover){
+             hoverPiece.setSelected(true);
+          }else{
+             hoverPiece.setSelected(false);
+          }
 
         // Save button
 
