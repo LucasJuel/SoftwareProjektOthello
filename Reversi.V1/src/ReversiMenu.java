@@ -12,6 +12,7 @@ public class ReversiMenu {
     public Stage stage;
     VBox root;
     private Scene scene;
+    Options options = new Options();
      
 
     public ReversiMenu(Stage stage){
@@ -25,6 +26,16 @@ public class ReversiMenu {
         scene = new Scene(root,800,500);
         //sets the background color
         root.setStyle("-fx-background-color: green;");
+
+         
+       
+        if(Options.Theme.equals("Yellow")){
+            root.setStyle("-fx-background-color: Yellow;");
+        }else if(Options.Theme.equals("Red")){
+            root.setStyle("-fx-background-color: Red;");
+        }else{
+            root.setStyle("-fx-background-color: Green;");
+        }
 
         //creating 3 buttons
         Button start = new Button("Start");
@@ -90,7 +101,6 @@ public class ReversiMenu {
 
     //start method create a options instance and starts it.
     private void options(Stage stage){
-        Options options = new Options();
         options.OptionsMenu(stage);
     }
 

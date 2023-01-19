@@ -32,6 +32,7 @@ public class Options {
     RadioButton Tema1;
     RadioButton Tema2;
     RadioButton Tema3;
+    static String Theme = "Green";
     static RadioButton selectedTema;
     ToggleGroup groupTema;
     Label saveConfirm;
@@ -74,7 +75,6 @@ public class Options {
     private void buildOptions()  {
         root = new Group();
         scene = new Scene(root,800,500);
-        scene.setFill(Paint.valueOf("Green"));
     
 
         //Select Size of the board.
@@ -133,7 +133,27 @@ public class Options {
         Tema1.setToggleGroup(groupTema);
         Tema2.setToggleGroup(groupTema);
         Tema3.setToggleGroup(groupTema);
-        Tema1.setSelected(true);
+        
+        
+        if(Theme.equals("Green")){
+            Tema1.setSelected(true);
+        }else if(Theme.equals("Red")){
+            Tema2.setSelected(true);
+        }else{
+            Tema3.setSelected(true);
+        }
+
+        if(Tema1.isSelected()){
+            Theme = "Green";
+            scene.setFill(Paint.valueOf("Green"));
+        }else if(Tema2.isSelected()){
+            Theme = "Red";
+            scene.setFill(Paint.valueOf("Red"));
+        }else{
+            Theme = "Yellow";
+            scene.setFill(Paint.valueOf("Yellow"));
+        }
+
 
 
         //setting up the select color with radio buttons where it's going to be displayed on the screen.
@@ -147,6 +167,8 @@ public class Options {
         Tema2.setLayoutY(240);
         Tema3.setLayoutX(50);
         Tema3.setLayoutY(260);
+
+
 
         
 
@@ -241,6 +263,18 @@ public class Options {
         showTime = showtimeCheck.isSelected();
 
         saveConfirm.setText("Options are saved");
+
+        if(Tema1.isSelected()){
+            Theme = "Green";
+            scene.setFill(Paint.valueOf("Green"));
+        }else if(Tema2.isSelected()){
+            Theme = "Red";
+            scene.setFill(Paint.valueOf("Red"));
+        }else{
+            Theme = "Yellow";
+            scene.setFill(Paint.valueOf("Yellow"));
+        }
+
     }
 
     //creating the back method to start the menu again and shows it on the screen. 
