@@ -89,7 +89,7 @@ public class Options {
         sliderSize.setMin(2);
         sliderSize.setMax(8);
         sliderSize.setValue(4);
-        size = 8;
+        size = 4;
         lSize.setText("8");
 
         //Create a visual on the slider so it's easier to see what value you are selecting.
@@ -255,7 +255,7 @@ public class Options {
 
     //creating the save method to check all the variables and puts them into other variables that can be used from other classes.
     private void save() {
-        size = Integer.parseInt(lSize.getText())/2;
+        size = Integer.parseInt(lSize.getText());
         selectedTema = (RadioButton) groupTema.getSelectedToggle();
         single = singleplayer.isSelected();
         automatically = automaticallyPiece.isSelected();
