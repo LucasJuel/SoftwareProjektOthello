@@ -122,22 +122,8 @@ public class Options {
         Slider sliderSize = new Slider();
 
         // set min and max values with a default value.
-        sliderSize.setMin(2);
-        sliderSize.setMax(8);
-        sliderSize.setValue(4);
-        size = 8;
-        lSize.setText("8");
-        sliderSize.setMinorTickCount(2);
-        sliderSize.setBlockIncrement(10);
+        setValueslider(sliderSize,2,8,4);
 
-        // Create a visual on the slider so it's easier to see what value you are
-        // selecting.
-        // sliderSize.setShowTickLabels(true);
-        // sliderSize.setShowTickMarks(true);
-        sliderSize.setMajorTickUnit(2);
-        sliderSize.setMinorTickCount(2);
-        sliderSize.setBlockIncrement(2);
-        sliderSize.setSnapToTicks(true);
 
         // creating a listener on the slider to create a label to show the value.
         sliderSize.valueProperty().addListener(
@@ -151,22 +137,18 @@ public class Options {
 
         // adds the slider to the group so we can show them. and setting coordinates.
         root.getChildren().addAll(labelSize, sliderSize, lSize);
-        labelSize.setLayoutX(50);
-        labelSize.setLayoutY(30);
-        sliderSize.setLayoutX(50);
-        sliderSize.setLayoutY(50);
-        lSize.setLayoutX(50);
-        lSize.setLayoutY(80);
+
+        placementLabel(labelSize, 50, 30);
+        placementSlider(sliderSize, 50, 50);
+        placementLabel(lSize, 50, 80);
+        
 
         // Creating RadioButton for pieces color
 
-        Tema1.setText("Classic");
-        Tema1.setTextFill(tekstFarveColor.get(colorInt));
-        Tema1.setSelected(true);
-        Tema2.setText("Sunset"); // Canva.com Triadic color Combination #df2120
-        Tema2.setTextFill(tekstFarveColor.get(colorInt));
-        Tema3.setText("Light Blue/Pink"); // #afe31c
-        Tema3.setTextFill(tekstFarveColor.get(colorInt));
+        createRadioButtons(Tema1,"Classic", tekstFarveColor.get(colorInt), true);
+        createRadioButtons(Tema2, "Sunset", tekstFarveColor.get(colorInt), false);
+        createRadioButtons(Tema3, "light Blue/Pink", tekstFarveColor.get(colorInt), false);
+
 
         // creating a Togglegroup so only one of these can be selected at a time
         groupTema = new ToggleGroup();
@@ -179,20 +161,22 @@ public class Options {
         selectColorTema = new Label("Select color of your Pieces");
         selectColorTema.setTextFill(tekstFarveColor.get(colorInt));
         root.getChildren().addAll(Tema1, Tema2, Tema3, selectColorTema);
-        selectColorTema.setLayoutX(50);
-        selectColorTema.setLayoutY(200);
-        Tema1.setLayoutX(50);
-        Tema1.setLayoutY(220);
-        Tema2.setLayoutX(50);
-        Tema2.setLayoutY(240);
-        Tema3.setLayoutX(50);
-        Tema3.setLayoutY(260);
+
+        placementLabel(selectColorTema, 50, 200);
+        placementRadio(Tema1, 50, 220);
+        placementRadio(Tema2, 50, 240);
+        placementRadio(Tema3, 50, 260);
 
         // Checkboxes with descriptions.
 
         singleplayer = new CheckBox("Singleplayer / play against the computer");
         possibleMove = new CheckBox("Show possible moves");
         hoverPiece = new CheckBox("See turned pieces by hovering");
+
+        setTextStyle(singleplayer, tekstFarveColor.get(colorInt));
+        setTextStyle(possibleMove, tekstFarveColor.get(colorInt));
+        setTextStyle(hoverPiece, tekstFarveColor.get(colorInt));
+
         singleplayer.setTextFill(tekstFarveColor.get(colorInt));
         possibleMove.setTextFill(tekstFarveColor.get(colorInt));
         hoverPiece.setTextFill(tekstFarveColor.get(colorInt));
@@ -217,30 +201,11 @@ public class Options {
 
         // adding the checkboxes to the group and adding coordinates to the group.
         root.getChildren().addAll(singleplayer, possibleMove, hoverPiece);
-        singleplayer.setLayoutX(400);
-        singleplayer.setLayoutY(50);
-        possibleMove.setLayoutX(400);
-        possibleMove.setLayoutY(90);
-        hoverPiece.setLayoutX(400);
-        hoverPiece.setLayoutY(130);
 
-        if (single) {
-            singleplayer.setSelected(true);
-        } else {
-            singleplayer.setSelected(false);
-        }
+        placementCheck(singleplayer, 400, 50);
+        placementCheck(possibleMove, 400, 90);
+        placementCheck(hoverPiece, 400, 130);
 
-        if (muligeTræk) {
-            possibleMove.setSelected(true);
-        } else {
-            possibleMove.setSelected(false);
-        }
-
-        if (pieceHover) {
-            hoverPiece.setSelected(true);
-        } else {
-            hoverPiece.setSelected(false);
-        }
 
         if (colorInt == 0) {
             Tema1.setSelected(true);
@@ -254,26 +219,12 @@ public class Options {
         // saved.
         saveConfirm = new Label("");
         root.getChildren().add(saveConfirm);
-        saveConfirm.setLayoutX(400);
-        saveConfirm.setLayoutY(380);
+        placementLabel(saveConfirm, 400, 380);
 
-        if (single) {
-            singleplayer.setSelected(true);
-        } else {
-            singleplayer.setSelected(false);
-        }
 
-        if (muligeTræk) {
-            possibleMove.setSelected(true);
-        } else {
-            possibleMove.setSelected(false);
-        }
-
-        if (pieceHover) {
-            hoverPiece.setSelected(true);
-        } else {
-            hoverPiece.setSelected(false);
-        }
+        setCheck(single, singleplayer);
+        setCheck(muligeTræk, possibleMove);
+        setCheck(pieceHover, hoverPiece);
 
         // Save button
 
@@ -299,6 +250,44 @@ public class Options {
         // sets the title and setting the scene.
         stage.setTitle("Reversi Options");
         stage.setScene(scene);
+    }
+
+    private void setCheck(boolean q, CheckBox check) {
+        if (q) {
+            check.setSelected(true);
+        } else {
+            check.setSelected(false);
+        }
+    }
+
+    private void placementCheck(CheckBox check, int x, int y) {
+        check.setLayoutX(x);
+        check.setLayoutY(y);
+    }
+
+    private void setTextStyle(CheckBox check, Color color) {
+        check.setTextFill(color);
+    }
+
+    private void placementRadio(RadioButton Tema, int x, int y) {
+        Tema.setLayoutX(x);
+        Tema.setLayoutY(y);
+    }
+
+    private void createRadioButtons(RadioButton radio, String string, Color color, boolean b) {
+        radio.setText(string);
+        radio.setTextFill(color);
+        radio.setSelected(b);
+    }
+
+    private void placementLabel(Label label, int x, int y) {
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+    }
+
+    private void placementSlider(Slider label, int x, int y) {
+        label.setLayoutX(x);
+        label.setLayoutY(y);
     }
 
     // creating the save method to check all the variables and puts them into other
@@ -354,5 +343,19 @@ public class Options {
         possibleMove.setTextFill(tekstFarveColor.get(colorInt));
         hoverPiece.setTextFill(tekstFarveColor.get(colorInt));
         scene.setFill(baggrundList.get(colorInt));
+    }
+
+    private void setValueslider(Slider sliderSize, int min, int max, int value) {
+        sliderSize.setMin(min);
+        sliderSize.setMax(max);
+        sliderSize.setValue(value);
+        size = value;
+        lSize.setText(String.valueOf(value*2));
+        // sliderSize.setShowTickLabels(true);
+        // sliderSize.setShowTickMarks(true);
+        sliderSize.setMajorTickUnit(2);
+        sliderSize.setMinorTickCount(2);
+        sliderSize.setBlockIncrement(2);
+        sliderSize.setSnapToTicks(true);
     }
 }
