@@ -123,6 +123,8 @@ public class Options {
         sliderSize.setValue(4);
         size = 8;
         lSize.setText("8");
+        sliderSize.setMinorTickCount(2);
+        sliderSize.setBlockIncrement(10);
 
         // Create a visual on the slider so it's easier to see what value you are
         // selecting.
@@ -236,6 +238,24 @@ public class Options {
         root.getChildren().add(saveConfirm);
         saveConfirm.setLayoutX(400);
         saveConfirm.setLayoutY(380);
+
+        if(single){
+            singleplayer.setSelected(true);
+         }else{
+             singleplayer.setSelected(false);
+         }
+ 
+         if(muligeTræk){
+             possibleMove.setSelected(true);
+          }else{
+             possibleMove.setSelected(false);
+          }
+ 
+          if(pieceHover){
+             hoverPiece.setSelected(true);
+          }else{
+             hoverPiece.setSelected(false);
+          }
 
         // Save button
 

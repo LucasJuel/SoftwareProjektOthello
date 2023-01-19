@@ -124,60 +124,22 @@ public class GameDriver_v2 extends Application {
                         modstanderTur = true;
                         gm.setTurText(3);
                         modstanderUr.schedule(new modstander(), modstanderVent);
-
                     }
 
-                }
+                    checkForPass();
+                
 
-                while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
-                    if (ruleBoard.start() == false && (pass == 2)) {
-                        // Spillet er færdig
-                        winner = ruleBoard.winner();
-                        System.out.println("winner er " + winner);
-                        if (Options.makeModstander() && winner == 1) {
-                            winner = 3;
-                        }
-                        gm.setVinderText(winner);
-                        isDone = true;
-                        break;
-                    }
-                    // Betyder at der skal meldes pas
-                    System.out.println("pass");
-                    if (Options.makeModstander()) {
-                        if (color == 1) {
-                            gm.setVinderText(7);
-                        } else if (color == 2) {
-                            gm.setVinderText(4);
-                            pass++;
-                            addPosCir();
-                            // Kalder en static metode
-                            Brik_v2.setPassColor();
-
-                            modstanderTur = true;
-                            gm.setTurText(3);
-                            modstanderUr.schedule(new modstander(), modstanderVent);
-
-                            break;
-                        }
-                    } else {
-                        if (color == 1) {
-                            gm.setVinderText(3);
-                        } else if (color == 2) {
-                            gm.setVinderText(4);
-                        }
-                    }
-
-                    pass++;
-                    addPosCir();
-                    // Kalder en static metode
-                    Brik_v2.setPassColor();
                 }
             } else if (gm.genstartIsPressed(q)) {
                 restartGame();
             } else if (gm.saveIsPressed(q)) {
-                saveGame();
+                if(!Options.makeModstander()){
+                    saveGame();
+                }
             } else if (gm.loadIsPressed(q)) {
                 loadGame();
+            } else if (gm.backIsPressed(q)) {
+                backGame();
             }
         }
     }
@@ -270,6 +232,12 @@ public class GameDriver_v2 extends Application {
 
     }
 
+    //Kører menuen og genstarter spillet.
+    private void backGame(){
+        ReversiMenu reversiMenu = new ReversiMenu(primStage);
+        reversiMenu.show();
+    }
+
     /**
      * Tilføjer cirkler hvor der er mulighed for at ligge en cirkel
      */
@@ -286,6 +254,61 @@ public class GameDriver_v2 extends Application {
             }
             // Ændre farve på tur teksten
             gm.setTurText(color);
+        }
+    }
+
+    public void checkForPass(){
+        legalMovesMap = ruleBoard.legalMove(color);
+        System.out.println("Udenfor While " + legalMovesMap.size() );
+        while (ruleBoard.start() == false && legalMovesMap.isEmpty()) {
+            System.out.println("inde i while");
+            if (ruleBoard.start() == false && (pass >= 2)) {
+                // Spillet er færdig
+                winner = ruleBoard.winner();
+                System.out.println("winner er " + winner);
+                if (Options.makeModstander() && winner == 1) {
+                    winner = 6;
+                }
+                gm.setVinderText(winner);
+                isDone = true;
+                break;
+            }
+            // Betyder at der skal meldes pas
+            if (Options.makeModstander()) {
+                if (color == 1) {
+                    System.out.println("Computeren siger pas " + pass);
+                    gm.setVinderText(7);
+                    pass++;
+                    addPosCir();
+                    // Kalder en static metode
+                    Brik_v2.setPassColor();
+                } else if (color == 2) {
+                    System.out.println("spiller siger pas " + pass);
+                    gm.setVinderText(4);
+                    pass++;
+                    addPosCir();
+                    // Kalder en static metode
+                    Brik_v2.setPassColor();
+
+                    modstanderTur = true;
+                    gm.setTurText(3);
+                    modstanderUr.schedule(new modstander(), modstanderVent);
+                }
+            
+            } else {
+                if (color == 1) {
+                    System.out.println("spiller siger pas " + pass);
+                    gm.setVinderText(3);
+                } else if (color == 2) {
+                    System.out.println("spiller siger pas " + pass);
+                    gm.setVinderText(4);
+                }
+                pass++;
+                addPosCir();
+                // Kalder en static metode
+                Brik_v2.setPassColor();
+            }
+
         }
     }
 
@@ -363,6 +386,8 @@ public class GameDriver_v2 extends Application {
                 }
                 Brik_v2.setPassColor();
             } else if (!legalMovesMap.isEmpty() && modstanderTur) {
+                System.out.println("jeg er i en tur!");
+                checkForPass();
                 Point m = new Point();
                 m = ruleBoard.oppMove();
                 gm.setVinderText(5);
@@ -384,7 +409,9 @@ public class GameDriver_v2 extends Application {
                     circleBoard.get(brikVendes.get(i).x).get(brikVendes.get(i).y).setMuligColor(color);
                 }
                 addPosCir();
-
+            } else if(legalMovesMap.isEmpty()){
+                System.out.println("im here");
+                checkForPass();
             }
             modstanderTur = false;
 
