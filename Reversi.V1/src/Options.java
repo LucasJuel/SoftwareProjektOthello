@@ -21,7 +21,7 @@ public class Options {
     public Stage stage;
     Group root;
     private Scene scene;
-    static int size= 4;
+    static int size = 8;
     Label lSize;
     Label Colorpieces;
     static boolean single = true;
@@ -39,24 +39,22 @@ public class Options {
     RadioButton Tema1 = new RadioButton();
     RadioButton Tema2 = new RadioButton();
     RadioButton Tema3 = new RadioButton();
-    private static ArrayList<Color> player1 = new ArrayList<Color>(
-            Arrays.asList(Color.WHITE, Color.rgb(142, 202, 230)));
-    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(251, 133, 0)));
-    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid", "Blå"));
-    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort", "Orange"));
-    private static ArrayList<Color> baggrundList = new ArrayList<Color>(
-            Arrays.asList(Color.GREEN, Color.rgb(2, 48, 71)));
-    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000", "023047"));
-    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.rgb(230, 57, 70)));
-    private static ArrayList<Color> tekstFarveColor = new ArrayList<Color>(
-            Arrays.asList(Color.BLACK, Color.rgb(230, 57, 70)));
+    private static ArrayList<Color> player1 = new ArrayList<Color>(Arrays.asList(Color.WHITE, Color.rgb(142, 202, 230), Color.rgb(192,81,255)));
+    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(251, 133, 0), Color.rgb(64,75,227)));
+    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid", "Blå", "Pink"));
+    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort", "Orange", "Blå"));
+    private static ArrayList<Color> baggrundList = new ArrayList<Color>(Arrays.asList(Color.GREEN, Color.rgb(2, 48, 71), Color.rgb(21, 21, 49)));
+    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000", "023047", "151531"));
+    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.rgb(230, 57, 70), Color.rgb(66,26,146)));
+    private static ArrayList<Color> tekstFarveColor = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(230, 57, 70), Color.rgb(139, 236, 193)));
 
     private static int colorInt = 1;
 
     // implements getters for import the values to the main game driver. to adjust
     // the settings set for the game.
     public static int getSize() {
-        return 4 * 2;
+        System.out.println(size);
+        return size;
     }
 
     public static boolean makeModstander() {
@@ -76,7 +74,6 @@ public class Options {
     }
 
     public static String getPlayer2String() {
-
         return player2farveStrings.get(colorInt);
     }
 
@@ -85,7 +82,6 @@ public class Options {
     }
 
     public static String getPlayer1String() {
-
         return player1farveStrings.get(colorInt);
     }
 
@@ -144,10 +140,9 @@ public class Options {
         
 
         // Creating RadioButton for pieces color
-
         createRadioButtons(Tema1,"Classic", tekstFarveColor.get(colorInt), true);
         createRadioButtons(Tema2, "Sunset", tekstFarveColor.get(colorInt), false);
-        createRadioButtons(Tema3, "light Blue/Pink", tekstFarveColor.get(colorInt), false);
+        createRadioButtons(Tema3, "A long time ago, in a galaxy far far away....", tekstFarveColor.get(colorInt), false);
 
 
         // creating a Togglegroup so only one of these can be selected at a time
@@ -348,9 +343,8 @@ public class Options {
     private void setValueslider(Slider sliderSize, int min, int max, int value) {
         sliderSize.setMin(min);
         sliderSize.setMax(max);
-        sliderSize.setValue(value);
-        size = value;
-        lSize.setText(String.valueOf(value*2));
+        sliderSize.setValue(size / 2);
+        lSize.setText(String.valueOf((int)(size)));
         // sliderSize.setShowTickLabels(true);
         // sliderSize.setShowTickMarks(true);
         sliderSize.setMajorTickUnit(2);

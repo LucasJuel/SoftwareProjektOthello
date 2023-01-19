@@ -61,7 +61,7 @@ public class GameDriver_v2 extends Application {
         if (event.getButton() == MouseButton.PRIMARY) {
             // Laver to point for hvor på brættet der trykkes eller hvor på skærmen
 
-            Point p = new Point((int) event.getX() / 100, (int) event.getY() / 100);
+            Point p = new Point((int) event.getX() / (800 / size), (int) event.getY() / (800 / size));
             q = new Point((int) event.getX(), (int) event.getY());
             // Tjekker om brugeren trykker inde på spillebrættet
 
@@ -122,25 +122,24 @@ public class GameDriver_v2 extends Application {
 
                     // Da den allerede har ændret farve til den næste brik.
                     addPosCir();
-                    checkForPass();
                     // Gør at brugeren spiller mod en computer
                     if (Options.makeModstander() && !legalMovesMap.isEmpty()) {
                         System.out.println("Computer træk");
                         modstanderTur = true;
                         gm.setTurText(3);
                         modstanderUr.schedule(new modstander(), modstanderVent);
+                        checkForPass();
+                    } else if(Options.makeModstander() && legalMovesMap.isEmpty()) {
+                        checkForPass();
                     }
 
-                }
-                if (!modstanderTur) {
-                    checkForPass();
                 }
             } else if (gm.genstartIsPressed(q)) {
                 restartGame();
             } else if (gm.saveIsPressed(q)) {
-                if (!Options.makeModstander()) {
+                if (!modstanderTur) {
                     saveGame();
-                }
+                } 
             } else if (gm.loadIsPressed(q)) {
                 loadGame();
             } else if (gm.backIsPressed(q)) {
@@ -149,6 +148,7 @@ public class GameDriver_v2 extends Application {
         }
     }
 
+    
     /**
      * Ændre hvilken farve tur det er
      */
@@ -196,6 +196,7 @@ public class GameDriver_v2 extends Application {
      * Gemmer brættet, når Save-knappen er trykket.
      */
     private void saveGame() {
+        System.out.println("Hej fra save");
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
         save.writeToFile();
     }
@@ -213,8 +214,8 @@ public class GameDriver_v2 extends Application {
         save = new SaveNContinue(ruleBoard.getGameboard(), color);
 
         // Bruger et forloop til at se gennem boardet og ændre farven på brikkerne
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 7; j++) {
+        for (int i = 0; i <= size-1; i++) {
+            for (int j = 0; j <= size-1; j++) {
                 ruleBoard.standardMoveDev(Integer.parseInt(save.getSavedBoard()[j][i]), j, i);
             }
         }
@@ -293,6 +294,7 @@ public class GameDriver_v2 extends Application {
                     addPosCir();
                     // Kalder en static metode
                     Brik_v2.setPassColor();
+                    modstanderTur = false;
                 } else if (color == 2) {
                     System.out.println("spiller siger pas " + pass);
                     gm.setVinderText(4);
@@ -319,7 +321,6 @@ public class GameDriver_v2 extends Application {
                 // Kalder en static metode
                 Brik_v2.setPassColor();
             }
-
         }
     }
 
@@ -399,7 +400,6 @@ public class GameDriver_v2 extends Application {
                 }
                 Brik_v2.setPassColor();
             } else if (!legalMovesMap.isEmpty() && modstanderTur) {
-                checkForPass();
                 Point m = new Point();
                 m = ruleBoard.oppMove();
                 gm.setVinderText(5);
@@ -421,11 +421,9 @@ public class GameDriver_v2 extends Application {
                     circleBoard.get(brikVendes.get(i).x).get(brikVendes.get(i).y).setMuligColor(color);
                 }
                 addPosCir();
-            } else if (legalMovesMap.isEmpty()) {
-                checkForPass();
-            }
+            } 
+            checkForPass();
             modstanderTur = false;
-
         }
     }
 

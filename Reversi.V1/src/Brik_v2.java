@@ -22,9 +22,9 @@ public class Brik_v2 {
     public Brik_v2(Regler r, GameBoard gm, Point p) {
         this.r = r;
         circle = new Circle();
-        circle.setCenterX(p.x * 100 + 50);
-        circle.setCenterY(p.y * 100 + 50);
-        circle.setRadius(40);
+        circle.setCenterX(p.x * 800 / Options.getSize() + ((800 / Options.getSize()) / 2));
+        circle.setCenterY(p.y * 800 / Options.getSize() + ((800 / Options.getSize()) / 2));
+        circle.setRadius(800 / Options.getSize() * 0.8 / 2);
         circles.add(circle);
         circle.setFill(null);
         gm.getRoot().getChildren().add(circle);

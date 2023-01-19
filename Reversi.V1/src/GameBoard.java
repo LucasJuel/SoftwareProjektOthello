@@ -206,7 +206,7 @@ public class GameBoard {
      * @return boolean baseret på om det er inde eller ude.
      */
     public boolean isOk(Point p) {
-        if (p.x * 100 < height) {
+        if (p.x * sizePiece < height) {
             return true;
         } else {
             return false;
