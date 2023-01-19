@@ -39,14 +39,18 @@ public class Options {
     RadioButton Tema1 = new RadioButton();
     RadioButton Tema2 = new RadioButton();
     RadioButton Tema3 = new RadioButton();
-    private static ArrayList<Color> player1 = new ArrayList<Color>(Arrays.asList(Color.WHITE, Color.rgb(142, 202, 230), Color.rgb(192,81,255)));
-    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(251, 133, 0), Color.rgb(64,75,227)));
-    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid", "Blå", "Pink"));
-    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort", "Orange", "Blå"));
-    private static ArrayList<Color> baggrundList = new ArrayList<Color>(Arrays.asList(Color.GREEN, Color.rgb(2, 48, 71), Color.rgb(21, 21, 49)));
-    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000", "023047", "151531"));
-    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.rgb(230, 57, 70), Color.rgb(66,26,146)));
-    private static ArrayList<Color> tekstFarveColor = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(230, 57, 70), Color.rgb(139, 236, 193)));
+    RadioButton Tema4 = new RadioButton();
+
+    private static ArrayList<Color> player1 = new ArrayList<Color>(Arrays.asList(Color.WHITE, Color.rgb(142, 202, 230), Color.rgb(192,81,255), Color.RED));
+    private static ArrayList<Color> player2 = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(251, 133, 0), Color.rgb(64,75,227), Color.rgb(46, 103, 248)));
+    private static ArrayList<String> player1farveStrings = new ArrayList<String>(Arrays.asList("Hvid", "Blå", "Pink", "Sith"));
+    private static ArrayList<String> player2farveStrings = new ArrayList<String>(Arrays.asList("Sort", "Orange", "Blå", "Jedi"));
+    private static ArrayList<Color> baggrundList = new ArrayList<Color>(Arrays.asList(Color.GREEN, Color.rgb(2, 48, 71), Color.rgb(21, 21, 49), Color.BLACK));
+    private static ArrayList<String> baggrundListHex = new ArrayList<String>(Arrays.asList("008000", "023047", "151531", "000000"));
+    private static ArrayList<Color> flipList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.rgb(230, 57, 70), Color.rgb(66,26,146), Color.rgb(47,249,36)));
+    private static ArrayList<Color> tekstFarveColor = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.rgb(230, 57, 70), Color.rgb(139, 236, 193), Color.rgb(255, 232, 31)));
+    private static ArrayList<Color> lineColor = new ArrayList<Color>(Arrays.asList(Color.BLACK, Color.RED, Color.WHITESMOKE, Color.rgb(255, 232, 31)));
+
 
     private static int colorInt = 1;
 
@@ -97,10 +101,15 @@ public class Options {
         return flipList.get(colorInt);
     }
 
+    public static Color getLineColor() {
+        return lineColor.get(colorInt);
+    }
+
     public void OptionsMenu(Stage stage) {
         this.stage = stage;
         buildOptions();
     }
+
 
     // builds the options menu window and all the visuals inside.
     private void buildOptions() {
@@ -142,7 +151,9 @@ public class Options {
         // Creating RadioButton for pieces color
         createRadioButtons(Tema1,"Classic", tekstFarveColor.get(colorInt), true);
         createRadioButtons(Tema2, "Sunset", tekstFarveColor.get(colorInt), false);
-        createRadioButtons(Tema3, "A long time ago, in a galaxy far far away....", tekstFarveColor.get(colorInt), false);
+        createRadioButtons(Tema3, "Andromeda", tekstFarveColor.get(colorInt), false);
+        createRadioButtons(Tema4, "A long time ago, in a galaxy far far away...", tekstFarveColor.get(colorInt), false);
+
 
 
         // creating a Togglegroup so only one of these can be selected at a time
@@ -150,17 +161,19 @@ public class Options {
         Tema1.setToggleGroup(groupTema);
         Tema2.setToggleGroup(groupTema);
         Tema3.setToggleGroup(groupTema);
+        Tema4.setToggleGroup(groupTema);
 
         // setting up the select color with radio buttons where it's going to be
         // displayed on the screen.
         selectColorTema = new Label("Select color of your Pieces");
         selectColorTema.setTextFill(tekstFarveColor.get(colorInt));
-        root.getChildren().addAll(Tema1, Tema2, Tema3, selectColorTema);
+        root.getChildren().addAll(Tema1, Tema2, Tema3, Tema4, selectColorTema);
 
         placementLabel(selectColorTema, 50, 200);
         placementRadio(Tema1, 50, 220);
         placementRadio(Tema2, 50, 240);
         placementRadio(Tema3, 50, 260);
+        placementRadio(Tema4, 50, 280);
 
         // Checkboxes with descriptions.
 
@@ -208,6 +221,8 @@ public class Options {
             Tema2.setSelected(true);
         } else if (colorInt == 2) {
             Tema3.setSelected(true);
+        }else if (colorInt == 3) {
+            Tema4.setSelected(true);
         }
 
         // creating a label to give a confirmation message on when the settings are
@@ -300,6 +315,8 @@ public class Options {
             colorInt = 1;
         } else if (Tema3.isSelected()) {
             colorInt = 2;
+        } else if (Tema4.isSelected()) {
+            colorInt = 3;
         }
         saveConfirm.setText("Options are saved");
         saveConfirm.setTextFill(tekstFarveColor.get(colorInt));
@@ -333,6 +350,7 @@ public class Options {
         Tema1.setTextFill(tekstFarveColor.get(colorInt));
         Tema2.setTextFill(tekstFarveColor.get(colorInt));
         Tema3.setTextFill(tekstFarveColor.get(colorInt));
+        Tema4.setTextFill(tekstFarveColor.get(colorInt));
         selectColorTema.setTextFill(tekstFarveColor.get(colorInt));
         singleplayer.setTextFill(tekstFarveColor.get(colorInt));
         possibleMove.setTextFill(tekstFarveColor.get(colorInt));

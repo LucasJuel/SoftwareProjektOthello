@@ -69,11 +69,11 @@ public class GameBoard {
         for (int i = 0; i < height + sizePiece; i += sizePiece) {
             // Horisontale streger.
             Line xGridline = new Line(i, 0, i, height);
-            xGridline.setFill(Color.BLACK);
+            xGridline.setStroke(Options.getLineColor());
             root.getChildren().add(xGridline);
             // Vertikale streger.
             Line yGridline = new Line(0, i, height, i);
-            yGridline.setFill(Color.BLACK);
+            yGridline.setStroke(Options.getLineColor());
             root.getChildren().add(yGridline);
         }
         // Text og knap til at kunne spille igen.
