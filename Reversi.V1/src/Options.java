@@ -177,6 +177,27 @@ public class Options {
         hoverPiece = new CheckBox("See turned pieces by hovering");
         showtimeCheck = new CheckBox("show the time used for each player");
 
+        if(possibleMove.isSelected()){
+            hoverPiece.setDisable(false);
+        }else{
+            hoverPiece.setDisable(true);
+        }
+
+        possibleMove.selectedProperty().addListener(
+            new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldBoolean, Boolean newBoolean) {
+                    if(newBoolean == true){
+                        hoverPiece.setDisable(false);
+                    }else{
+                        hoverPiece.setDisable(true);
+                        hoverPiece.setSelected(false);
+                    }
+                }
+                    }
+        );
+        
+
         // adding the checkboxes to the group and adding coordinates to the group.
         root.getChildren().addAll(singleplayer, possibleMove, hoverPiece, showtimeCheck);
         singleplayer.setLayoutX(400);
@@ -248,6 +269,8 @@ public class Options {
         muligeTræk = possibleMove.isSelected();
         pieceHover = hoverPiece.isSelected();
         showTime = showtimeCheck.isSelected();
+
+        
 
         saveConfirm.setText("Options are saved");
     }
